@@ -64,6 +64,33 @@ class PRM extends Controller
     }
     // }}}
 
+    // {{{ getRecords
+    public function getRecord($id)
+    {
+        $record = Mapper::findOneBy(
+            'Record',
+            [
+                'id' => $id,
+                'user' => $this->getCurrentUser(),
+            ]
+        );
+
+        return $record;
+    }
+    // }}}
+    // {{{ getRecords
+    public function getRecords()
+    {
+        $records = Mapper::findBy(
+            'Record',
+            [
+                'user' => $this->getCurrentUser(),
+            ]
+        );
+
+        return $records;
+    }
+    // }}}
     // {{{ addRecordRaw
     public function addRecordRaw($categoryName, array $tagNames = [], \DateTime $start = null, \DateTime $end = null)
     {

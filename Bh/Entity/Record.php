@@ -30,4 +30,11 @@ class Record extends PrivateEntity
         $this->end = $end;
     }
     // }}}
+
+    // {{{ getCategory
+    public function getCategory()
+    {
+        return $this->entry->getCategory()->getName();
+    }
+    // }}}
 }
