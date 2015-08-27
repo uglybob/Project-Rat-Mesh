@@ -38,7 +38,7 @@ class PRM extends Controller
      // {{{ getAttribute
     protected function getAttribute($type, $name)
     {
-        $attribute = $this->mapper->findOneBy(
+        $attribute = Mapper::findOneBy(
             $type,
             [
                 'user' => $this->getCurrentUser(),
@@ -57,7 +57,7 @@ class PRM extends Controller
         if (!$attribute) {
             $class = 'Bh\Entity\\' . $type;
             $attribute= new $class($this->getCurrentUser(), $name);
-            $this->save($attribute);
+            Mapper::save($attribute);
         }
 
         return $attribute;
@@ -79,17 +79,10 @@ class PRM extends Controller
     // {{{ addRecord
     protected function addRecord(Category $category, array $tags = [], \DateTime $start = null, \DateTime $end = null)
     {
-        $entry = new Entry($category);
-        $record = new Record($this->getCurrentUser(), $entry, $start, $end);
+        $record = new Record($this->getCurrentUser(), $category, $tags, $start, $end);
 
-        foreach ($tags as $tag) {
-            $assoc = new EntryTagAssoc($entry, $tag);
-            $this->save($assoc);
-        }
-
-        $this->save($entry);
-        $this->save($record);
-        $this->commit();
+        Mapper::save($record);
+        Mapper::commit();
 
         return $record;
     }

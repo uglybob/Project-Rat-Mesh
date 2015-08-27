@@ -2,6 +2,8 @@
 
 namespace Bh\Entity;
 
+use Bh\Lib\Mapper;
+
 class Record extends PrivateEntity
 {
     protected $entry;
@@ -9,11 +11,17 @@ class Record extends PrivateEntity
     protected $end;
 
     // {{{ constructor
-    public function __construct(User $user, Entry $entry, \DateTime $start = null, \DateTime $end = null)
+    public function __construct(User $user, Category $category, array $tags = [], \DateTime $start = null, \DateTime $end = null)
     {
         parent::__construct($user);
 
-        $this->entry = $entry;
+        $this->entry = new Entry($category);
+        Mapper::save($this->entry);
+
+        foreach ($tags as $tag) {
+            $assoc = new EntryTagAssoc($this->entry, $tag);
+            Mapper::save($assoc);
+        }
 
         if (is_null($start)) {
             $this->start = new \DateTime('now');
