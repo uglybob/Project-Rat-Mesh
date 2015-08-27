@@ -2,4 +2,6 @@
 
 require_once('vendor/autoload.php');
 
-new Bh\Bh();
+$prm = new Bh\Lib\PRM();
+
+new Bh\Bh($prm);
