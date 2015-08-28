@@ -5,8 +5,6 @@ namespace Bh\Lib;
 use Bh\Entity\Record;
 use Bh\Entity\Category;
 use Bh\Entity\Tag;
-use Bh\Entity\Entry;
-use Bh\Entity\EntryTagAssoc;
 
 class PRM extends Controller
 {
@@ -14,6 +12,12 @@ class PRM extends Controller
     public function getCategory($name)
     {
         return $this->getAttribute('Category', $name);
+    }
+    // }}}
+     // {{{ getCategoryList
+    public function getCategoryList()
+    {
+        return $this->getAttributeList('Category');
     }
     // }}}
     // {{{ addCategory
@@ -49,6 +53,24 @@ class PRM extends Controller
         return $attribute;
     }
     // }}}
+     // {{{ getAttributeList
+    protected function getAttributeList($type)
+    {
+        $attributeList = [];
+        $attributes = Mapper::findBy(
+            $type,
+            [
+                'user' => $this->getCurrentUser(),
+            ]
+        );
+
+        foreach ($attributes as $attribute) {
+            $attributeList[$attribute->getId()] = $attribute->getName();
+        }
+
+        return $attributeList;
+    }
+    // }}}
      // {{{ addAttribute
     protected function addAttribute($type, $name)
     {
@@ -64,7 +86,7 @@ class PRM extends Controller
     }
     // }}}
 
-    // {{{ getRecords
+    // {{{ getRecord
     public function getRecord($id)
     {
         $record = Mapper::findOneBy(
