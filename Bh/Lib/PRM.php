@@ -27,28 +27,21 @@ class PRM extends Controller
     }
     // }}}
 
+    // {{{ addTag
+    public function addTag($name)
+    {
+        return $this->addAttribute('Tag', $name);
+    }
+    // }}}
     // {{{ addTags
     public function addTags(array $names)
     {
-        $names = array_unique($names);
-        $newNames = [];
+        $tags = [];
 
-        $tags = Mapper::findBy(
-            'Tag',
-            [
-                'user' => $this->getCurrentUser(),
-                'name' => $names,
-            ]
-        );
-
-        foreach ($tags as $tag) {
-            unset($names[$tag->__toString()]);
-        }
-
-        foreach ($names as $name) {
-            $newTag = new Tag($this->getCurrentUser(), $name);
-            Mapper::save($newTag);
-            $tags[] = $newTag;
+        foreach($names as $name) {
+            if ($tag = $this->addTag($name)) {
+                $tags[] = $tag;
+            }
         }
 
         return $tags;
@@ -87,12 +80,17 @@ class PRM extends Controller
      // {{{ addAttribute
     protected function addAttribute($type, $name)
     {
-        $attribute = $this->getAttribute($type, $name);
+        $attribute = null;
+        $name = trim($name);
 
-        if (!$attribute) {
-            $class = 'Bh\Entity\\' . $type;
-            $attribute= new $class($this->getCurrentUser(), $name);
-            Mapper::save($attribute);
+        if (!empty($name)) {
+            $attribute = $this->getAttribute($type, $name);
+
+            if (!$attribute) {
+                $class = 'Bh\Entity\\' . $type;
+                $attribute= new $class($this->getCurrentUser(), $name);
+                Mapper::save($attribute);
+            }
         }
 
         return $attribute;

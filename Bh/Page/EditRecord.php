@@ -10,7 +10,7 @@ class EditRecord extends EditForm
         $this->form->addText(
             'Category',
             ['list' => $this->controller->getCategories()]
-        );
+        )->setRequired();
 
         $this->form->addText('Tags');
 
@@ -42,7 +42,7 @@ class EditRecord extends EditForm
             new \DateTime(),
             new \DateTime(),
             $values['Category'],
-            explode(', ', $values['Tags'])
+            explode(',', $values['Tags'])
         );
     }
     // }}}
