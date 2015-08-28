@@ -32,11 +32,11 @@ class PRM extends Controller
         return $this->getAttribute('Tag', $name);
     }
     // }}}
-     // {{{ getTags
-    public function getTags(array $ids)
+     // {{{ getTagsById
+    public function getTagsById(array $ids)
     {
         $tags = Mapper::findBy(
-            'Tags',
+            'Tag',
             [
                 'user' => $this->getCurrentUser(),
                 'id' => $ids,
@@ -108,6 +108,8 @@ class PRM extends Controller
                 'user' => $this->getCurrentUser(),
             ]
         );
+
+        $record->setPrm($this);
 
         return $record;
     }

@@ -23,11 +23,4 @@ class Record extends EntryInterface
         $this->end = null;
     }
     // }}}
-
-    // {{{ getCategory
-    public function getCategory()
-    {
-        return $this->entry->getCategory();
-    }
-    // }}}
 }

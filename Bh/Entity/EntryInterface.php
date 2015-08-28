@@ -14,7 +14,9 @@ class EntryInterface extends PrivateEntity
     {
         parent::__construct($prm->getCurrentUser());
 
+        $this->prm = $prm;
         $this->entry = new Entry();
+
         Mapper::save($this->entry);
     }
     // }}}
@@ -51,7 +53,14 @@ class EntryInterface extends PrivateEntity
             ]
         );
 
-        return $assocs;
+        $ids = [];
+        foreach ($assocs as $assoc) {
+            $ids[] = $assoc->getId();
+        }
+
+        $tags = $this->prm->getTagsById($ids);
+
+        return $tags;
     }
     // }}}
 
