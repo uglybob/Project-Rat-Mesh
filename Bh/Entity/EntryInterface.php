@@ -9,8 +9,10 @@ class EntryInterface extends PrivateEntity
     protected $entry;
 
     // {{{ constructor
-    public function __construct()
+    public function __construct(User $user)
     {
+        parent::__construct($user);
+
         $this->entry = new Entry();
         Mapper::save($this->entry);
     }

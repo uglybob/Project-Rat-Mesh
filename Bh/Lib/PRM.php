@@ -130,7 +130,7 @@ class PRM extends Controller
         $record = $this->getRecord($id);
 
         if (is_null($record)) {
-            $record = new Record();
+            $record = new Record($this->getCurrentUser());
             Mapper::save($record);
         }
 

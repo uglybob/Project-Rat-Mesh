@@ -10,6 +10,8 @@ class Entry extends Entity
     // {{{ constructor
     public function __construct()
     {
+        parent::__construct();
+
         $this->entryTagAssoc = new \Doctrine\Common\Collections\ArrayCollection();
     }
     // }}}

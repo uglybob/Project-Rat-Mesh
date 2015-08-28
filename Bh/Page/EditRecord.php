@@ -35,10 +35,11 @@ class EditRecord extends EditForm
     // {{{ save
     protected function save()
     {
+        $id = ($this->object) ? $this->object->getId() : null;
         $values = $this->form->getValues();
 
         $this->controller->editRecord(
-            $this->object->getId(),
+            $id,
             new \DateTime(),
             new \DateTime(),
             $values['Category'],

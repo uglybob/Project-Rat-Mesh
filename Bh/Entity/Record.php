@@ -8,9 +8,9 @@ class Record extends EntryInterface
     protected $end;
 
     // {{{ constructor
-    public function __construct(PRM $controller)
+    public function __construct(User $user)
     {
-        parent::__construct($controller);
+        parent::__construct($user);
 
         $this->start = new \DateTime('now');
         $this->end = null;
@@ -40,6 +40,8 @@ class Record extends EntryInterface
             $output = new \DateTime();
             $output->setTimestamp($input);
         }
+
+        return $output;
     }
     // }}}
 }
