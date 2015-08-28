@@ -3,6 +3,5 @@
     xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
     http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
-    <entity name="Bh\Entity\Tag" table="tags">
-    </entity>
+    <entity name="Bh\Entity\Tag" table="tags" />
 </doctrine-mapping>

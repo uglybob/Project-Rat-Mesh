@@ -14,10 +14,10 @@ class PRM extends Controller
         return $this->getAttribute('Category', $name);
     }
     // }}}
-     // {{{ getCategoryList
-    public function getCategoryList()
+     // {{{ getCategories
+    public function getCategories()
     {
-        return $this->getAttributeList('Category');
+        return $this->getAttributes('Category');
     }
     // }}}
     // {{{ addCategory
@@ -32,6 +32,21 @@ class PRM extends Controller
         return $this->getAttribute('Tag', $name);
     }
     // }}}
+     // {{{ getTags
+    public function getTags(array $ids)
+    {
+        $tags = Mapper::findBy(
+            'Tags',
+            [
+                'user' => $this->getCurrentUser(),
+                'id' => $ids,
+            ]
+        );
+
+        return $tags;
+ 
+    }
+    // }}}
     // {{{ addTag
     public function addTag($name)
     {
@@ -42,6 +57,8 @@ class PRM extends Controller
      // {{{ getAttribute
     protected function getAttribute($type, $name)
     {
+        $name = is_string($name) ? $name : $name->__toString();
+
         $attribute = Mapper::findOneBy(
             $type,
             [
@@ -53,10 +70,9 @@ class PRM extends Controller
         return $attribute;
     }
     // }}}
-     // {{{ getAttributeList
-    protected function getAttributeList($type)
+     // {{{ getAttributes
+    protected function getAttributes($type)
     {
-        $attributeList = [];
         $attributes = Mapper::findBy(
             $type,
             [
@@ -64,11 +80,7 @@ class PRM extends Controller
             ]
         );
 
-        foreach ($attributes as $attribute) {
-            $attributeList[$attribute->getId()] = $attribute->getName();
-        }
-
-        return $attributeList;
+        return $attributes;
     }
     // }}}
      // {{{ addAttribute
@@ -113,27 +125,11 @@ class PRM extends Controller
         return $records;
     }
     // }}}
-    // {{{ addRecordRaw
-    public function addRecordRaw($categoryName, array $tagNames = [], \DateTime $start = null, \DateTime $end = null)
+    // {{{ editRecord
+    public function editRecord(Record $Record)
     {
-        $category = $this->addCategory($categoryName);
-
-        foreach (array_unique($tagNames) as $tagName) {
-            $tags[] = $this->addTag($tagName);
-        }
-
-        return $this->addRecord($category, $tags);
-    }
-    // }}}
-    // {{{ addRecord
-    protected function addRecord(Category $category, array $tags = [], \DateTime $start = null, \DateTime $end = null)
-    {
-        $record = new Record($this->getCurrentUser(), $category, $tags, $start, $end);
-
         Mapper::save($record);
-        Mapper::commit();
-
-        return $record;
+        Mapper::commit($record);
     }
     // }}}
 }
