@@ -6,25 +6,20 @@ use Bh\Lib\Mapper;
 
 class EntryInterface extends PrivateEntity
 {
-    protected $prm;
     protected $entry;
 
     // {{{ constructor
-    public function __construct(PRM $prm)
+    public function __construct()
     {
-        parent::__construct($prm->getCurrentUser());
-
-        $this->prm = $prm;
         $this->entry = new Entry();
-
         Mapper::save($this->entry);
     }
     // }}}
 
     // {{{ setCategory
-    public function setCategory($category)
+    public function setCategory(Category $category)
     {
-        $this->entry->setCategory = $this->prm->addCategory($category);
+        $this->entry->setCategory($category);
     }
     // }}}
     // {{{ getCategory
@@ -34,61 +29,54 @@ class EntryInterface extends PrivateEntity
     }
     // }}}
 
-    // {{{ addTag
-    public function addTag($newTag)
+    // {{{ setTags
+    public function setTags(array $tags)
     {
-        foreach ($newTags as $newTag) {
-            $tag = $this->controller->addTag($newTag);
-            $this->addEntryTagAssoc($this->entry, $tag);
-        }
+        $this->addTagAssocs($tags);
     }
     // }}}
     // {{{ getTags
     public function getTags()
     {
+        return $this->entry->getTags();
+    }
+    // }}}
+
+    // {{{ getTagAssocs
+    protected function getTagAssocs(array $tags)
+    {
         $assocs = Mapper::findBy(
             'EntryTagAssoc',
             [
                 'entry' => $this->entry,
+                'tag' => $tags,
             ]
         );
 
-        $ids = [];
-        foreach ($assocs as $assoc) {
-            $ids[] = $assoc->getId();
+        return $assocs;
+    }
+    // }}}
+    // {{{ addTagAssocs
+    protected function addTagAssocs(array $tags)
+    {
+        $assocs = $this->getTagAssocs($tags);
+
+        $tagIndex = [];
+        foreach ($tags as $tag) {
+            $tagIndex[$tag->__toString()] = $tag;
         }
 
-        $tags = $this->prm->getTagsById($ids);
+        foreach ($assocs as $assoc) {
+            unset($tagIndex[$assoc->getTag()->__toString()]);
+        }
 
-        return $tags;
-    }
-    // }}}
+        foreach($tagIndex as $tag) {
+            $assoc = new EntryTagAssoc($this->entry, $tag);
+            $this->entry->addEntryTagAssoc($assoc);
+            $tag->addEntryTagAssoc($assoc);
 
-     // {{{ getEntryTagAssoc
-    protected function getEntryTagAssoc(Entry $entry, Tag $tag)
-    {
-        $assoc = Mapper::findOneBy(
-            'EntryTagAssoc',
-            [
-                'entry' => $entry,
-                'tag' => $tag,
-            ]
-        );
-
-        return $assoc;
-    }
-    // }}}
-    // {{{ addEntryTagAssoc
-    protected function addEntryTagAssoc($entry, $tag)
-    {
-        $assoc = $this->getEntryTagAssoc($entry, $tag);
-
-        if (!$assoc) {
-            $attribute = new EntryTagAssoc($entry, $tag);
             Mapper::save($assoc);
         }
-
-        return $assoc;
     }
     // }}}
 }

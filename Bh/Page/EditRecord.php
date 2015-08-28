@@ -32,16 +32,24 @@ class EditRecord extends EditForm
         $this->form->populate($values);
     }
     // }}}
-    // {{{ instantiateObject
-    protected function instantiateObject($class)
-    {
-        return new \Bh\Entity\Record($this->prm);
-    }
-    // }}}
     // {{{ save
     protected function save()
     {
         $values = $this->form->getValues();
+
+        $this->controller->editRecord(
+            $this->object->getId(),
+            new \DateTime(),
+            new \DateTime(),
+            $values['Category'],
+            explode(', ', $values['Tags'])
+        );
+    }
+    // }}}
+    // {{{ redirect
+    protected function redirect()
+    {
+        Page::redirect('/Records');
     }
     // }}}
 }

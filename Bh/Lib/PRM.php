@@ -26,31 +26,32 @@ class PRM extends Controller
         return $this->addAttribute('Category', $name);
     }
     // }}}
-     // {{{ getTag
-    public function getTag($name)
+
+    // {{{ addTags
+    public function addTags(array $names)
     {
-        return $this->getAttribute('Tag', $name);
-    }
-    // }}}
-     // {{{ getTagsById
-    public function getTagsById(array $ids)
-    {
+        $names = array_unique($names);
+        $newNames = [];
+
         $tags = Mapper::findBy(
             'Tag',
             [
                 'user' => $this->getCurrentUser(),
-                'id' => $ids,
+                'name' => $names,
             ]
         );
 
+        foreach ($tags as $tag) {
+            unset($names[$tag->__toString()]);
+        }
+
+        foreach ($names as $name) {
+            $newTag = new Tag($this->getCurrentUser(), $name);
+            Mapper::save($newTag);
+            $tags[] = $newTag;
+        }
+
         return $tags;
- 
-    }
-    // }}}
-    // {{{ addTag
-    public function addTag($name)
-    {
-        return $this->addAttribute('Tag', $name);
     }
     // }}}
 
@@ -109,8 +110,6 @@ class PRM extends Controller
             ]
         );
 
-        $record->setPrm($this);
-
         return $record;
     }
     // }}}
@@ -128,9 +127,20 @@ class PRM extends Controller
     }
     // }}}
     // {{{ editRecord
-    public function editRecord(Record $Record)
+    public function editRecord($id, $start, $end, $category, $tags)
     {
-        Mapper::save($record);
+        $record = $this->getRecord($id);
+
+        if (is_null($record)) {
+            $record = new Record();
+            Mapper::save($record);
+        }
+
+        $record->setStart($start);
+        $record->setEnd($end);
+        $record->setCategory($this->addCategory($category));
+        $record->setTags($this->addTags($tags));
+
         Mapper::commit($record);
     }
     // }}}

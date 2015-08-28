@@ -2,8 +2,6 @@
 
 namespace Bh\Entity;
 
-use Bh\Lib\Mapper;
-
 class Record extends EntryInterface
 {
     protected $start;
@@ -14,13 +12,34 @@ class Record extends EntryInterface
     {
         parent::__construct($controller);
 
-        foreach ($tags as $tag) {
-            $assoc = new EntryTagAssoc($this->entry, $tag);
-            Mapper::save($assoc);
-        }
-
         $this->start = new \DateTime('now');
         $this->end = null;
+    }
+    // }}}
+
+    // {{{ setStart
+    public function setStart($start)
+    {
+        $this->start = $this->formatDateTime($start);
+    }
+    // }}}
+    // {{{ setEnd
+    public function setEnd($end)
+    {
+        $this->end = $this->formatDateTime($end);
+    }
+    // }}}
+    // {{{ formatDateTime
+    public function formatDateTime($input)
+    {
+        if (is_a($input, 'DateTime')) {
+            $output = $input;
+        } elseif (is_null($input)) {
+            $output = null;
+        } else {
+            $output = new \DateTime();
+            $output->setTimestamp($input);
+        }
     }
     // }}}
 }
