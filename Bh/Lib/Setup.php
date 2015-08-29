@@ -5,6 +5,7 @@ namespace Bh\Lib;
 class Setup
 {
     protected static $settings = [
+        'EnableRegistration' => false,
         'DevMode' => true,
         'MapperPath' => 'Bh/Mapper',
         'DbHost' => 'localhost',
