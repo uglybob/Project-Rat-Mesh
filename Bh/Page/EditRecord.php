@@ -69,6 +69,12 @@ class EditRecord extends EditForm
     }
     // }}}
 
+    // {{{ instantiateObject
+    protected function instantiateObject()
+    {
+    }
+    // }}}
+
     // {{{ format
     protected function format($dateTime, $format)
     {
