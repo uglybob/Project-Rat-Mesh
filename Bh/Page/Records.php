@@ -11,7 +11,11 @@ class Records extends ObjectList
     protected function loadProperties($record)
     {
         return [
+            $record->getStart()->format('H:i d.m.Y'),
+            $record->getActivity(),
+            '@',
             $record->getCategory(),
+            implode(', ',$record->getTags()),
         ];
     }
 }
