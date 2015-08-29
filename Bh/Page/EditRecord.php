@@ -29,6 +29,15 @@ class EditRecord extends EditForm
             'Tags' => implode(', ', $this->object->getTags()),
         ];
 
+        if ($start = $this->object->getStart()) {
+            $values['Start-Date'] = $this->toDate($start);
+            $values['Start-Time'] = $this->toTime($start);
+        }
+        if ($end = $this->object->getEnd()) {
+            $values['End-Date'] = $this->toDate($end);
+            $values['End-Time'] = $this->toTime($end);
+        }
+
         $this->form->populate($values);
     }
     // }}}
@@ -40,8 +49,8 @@ class EditRecord extends EditForm
 
         $this->controller->editRecord(
             $id,
-            new \DateTime(),
-            new \DateTime(),
+            $this->toDateTime($values['Start-Time'], $values['Start-Date']),
+            $this->toDateTime($values['End-Time'], $values['End-Date']),
             $values['Category'],
             explode(',', $values['Tags'])
         );
@@ -51,6 +60,49 @@ class EditRecord extends EditForm
     protected function redirect()
     {
         Page::redirect('/Records');
+    }
+    // }}}
+
+    // {{{ format
+    protected function format($dateTime, $format)
+    {
+        $result = '';
+
+        if ($dateTime) {
+            $result = $dateTime->format($format);
+        }
+
+        return $result;
+    }
+    // }}}
+    // {{{ toDate
+    protected function toDate($dateTime)
+    {
+        return $this->format($dateTime, 'd.m.Y');
+    }
+    // }}}
+    // {{{ toTime
+    protected function toTime($dateTime)
+    {
+        return $this->format($dateTime, 'H:i');
+    }
+    // }}}
+
+    // {{{ toDateTime
+    protected function toDateTime($time, $date)
+    {
+        $result = null;
+        $time = trim($time);
+        $date = trim($date);
+
+        if (
+            !empty($time)
+            && !empty($date)
+        ) {
+            $result = \DateTime::createFromFormat('H:i d.m.Y', $time . ' ' . $date);
+        }
+
+        return $result;
     }
     // }}}
 }
