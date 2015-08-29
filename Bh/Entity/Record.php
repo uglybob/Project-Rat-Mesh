@@ -44,4 +44,17 @@ class Record extends EntryInterface
         return $output;
     }
     // }}}
+
+    // {{{ getRow
+    public function getRow()
+    {
+        return [
+            $this->getStart()->format('H:i d.m.Y'),
+            $this->getActivity(),
+            '@',
+            $this->getCategory(),
+            implode(', ',$this->getTags()),
+        ];
+    }
+    // }}}
 }

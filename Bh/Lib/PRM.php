@@ -144,6 +144,20 @@ class PRM extends Controller
         return $records;
     }
     // }}}
+    // {{{ getCurrentRecords
+    public function getCurrentRecords()
+    {
+        $records = Mapper::findBy(
+            'Record',
+            [
+                'user' => $this->getCurrentUser(),
+                'end' => null,
+            ]
+        );
+
+        return $records;
+    }
+    // }}}
     // {{{ editRecord
     public function editRecord($id, $start, $end, $activity, $category, $tags)
     {

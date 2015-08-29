@@ -2,20 +2,10 @@
 
 namespace Bh\Page;
 
-class Records extends ObjectList
+class Records extends Backend
 {
     public function renderContent()
     {
-        return $this->renderList($this->controller->getRecords(), 'Record');
-    }
-    protected function loadProperties($record)
-    {
-        return [
-            $record->getStart()->format('H:i d.m.Y'),
-            $record->getActivity(),
-            '@',
-            $record->getCategory(),
-            implode(', ',$record->getTags()),
-        ];
+        return new ObjectList($this->controller->getRecords(), 'Record');
     }
 }

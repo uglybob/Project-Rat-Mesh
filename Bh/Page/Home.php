@@ -8,6 +8,13 @@ class Home extends Page
     {
         $user = $this->controller->getCurrentUser();
         $userString = ($user) ? $user->getEmail() : 'not logged in';
-        return 'this is home and you are ' . $userString;
+
+        $content = '<div>this is home and you are ' . $userString . '</div>';
+
+        if ($this->controller->getCurrentUser()) {
+            $content .= new ObjectList($this->controller->getCurrentRecords(), 'Record');
+        }
+
+        return $content;
     }
 }
