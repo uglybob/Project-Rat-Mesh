@@ -5,6 +5,7 @@ namespace Bh\Entity;
 class Entry extends Entity
 {
     protected $category;
+    protected $activity;
     protected $entryTagAssoc = null;
 
     // {{{ constructor

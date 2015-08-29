@@ -5,6 +5,7 @@
 
     <entity name="Bh\Entity\Entry" table="entries">
         <many-to-one target-entity="Category" field="category" inversed-by="entry" />
+        <many-to-one target-entity="Activity" field="activity" inversed-by="entry" />
         <one-to-many target-entity="EntryTagAssoc" field="entryTagAssoc" mapped-by="entry" />
     </entity>
 </doctrine-mapping>

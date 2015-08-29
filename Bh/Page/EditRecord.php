@@ -8,6 +8,10 @@ class EditRecord extends EditForm
     protected function create()
     {
         $this->form->addText(
+            'Activity',
+            ['list' => $this->controller->getActivities()]
+        );
+        $this->form->addText(
             'Category',
             ['list' => $this->controller->getCategories()]
         )->setRequired();
@@ -25,6 +29,7 @@ class EditRecord extends EditForm
     protected function populate()
     {
         $values = [
+            'Activity' => $this->object->getActivity(),
             'Category' => $this->object->getCategory(),
             'Tags' => implode(', ', $this->object->getTags()),
         ];
@@ -51,6 +56,7 @@ class EditRecord extends EditForm
             $id,
             $this->toDateTime($values['Start-Time'], $values['Start-Date']),
             $this->toDateTime($values['End-Time'], $values['End-Date']),
+            $values['Activity'],
             $values['Category'],
             explode(',', $values['Tags'])
         );

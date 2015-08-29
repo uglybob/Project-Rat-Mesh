@@ -4,6 +4,7 @@ namespace Bh\Lib;
 
 use Bh\Entity\Record;
 use Bh\Entity\Category;
+use Bh\Entity\Activity;
 use Bh\Entity\Tag;
 
 class PRM extends Controller
@@ -24,6 +25,25 @@ class PRM extends Controller
     public function addCategory($name)
     {
         return $this->addAttribute('Category', $name);
+    }
+    // }}}
+
+     // {{{ getActivity
+    public function getActivity($name)
+    {
+        return $this->getAttribute('Activity', $name);
+    }
+    // }}}
+     // {{{ getActivities
+    public function getActivities()
+    {
+        return $this->getAttributes('Activity');
+    }
+    // }}}
+    // {{{ addActivity
+    public function addActivity($name)
+    {
+        return $this->addAttribute('Activity', $name);
     }
     // }}}
 
@@ -125,7 +145,7 @@ class PRM extends Controller
     }
     // }}}
     // {{{ editRecord
-    public function editRecord($id, $start, $end, $category, $tags)
+    public function editRecord($id, $start, $end, $activity, $category, $tags)
     {
         $record = $this->getRecord($id);
 
@@ -136,6 +156,7 @@ class PRM extends Controller
 
         $record->setStart($start);
         $record->setEnd($end);
+        $record->setActivity($this->addActivity($activity));
         $record->setCategory($this->addCategory($category));
         $record->setTags($this->addTags($tags));
 

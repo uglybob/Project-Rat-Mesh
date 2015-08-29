@@ -31,6 +31,19 @@ class EntryInterface extends PrivateEntity
     }
     // }}}
 
+    // {{{ setActivity
+    public function setActivity($activity)
+    {
+        $this->entry->setActivity($activity);
+    }
+    // }}}
+    // {{{ getActivity
+    public function getActivity()
+    {
+        return $this->entry->getActivity();
+    }
+    // }}}
+
     // {{{ setTags
     public function setTags(array $tags)
     {
