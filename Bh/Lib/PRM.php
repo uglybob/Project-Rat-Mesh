@@ -136,9 +136,9 @@ class PRM extends Controller
     {
         $records = Mapper::findBy(
             'Record',
-            [
-                'user' => $this->getCurrentUser(),
-            ]
+            ['user' => $this->getCurrentUser()],
+            false,
+            ['start' => 'ASC']
         );
 
         return $records;
@@ -152,7 +152,9 @@ class PRM extends Controller
             [
                 'user' => $this->getCurrentUser(),
                 'end' => null,
-            ]
+            ],
+            false,
+            ['start' => 'ASC']
         );
 
         return $records;

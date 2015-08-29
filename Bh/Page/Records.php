@@ -6,6 +6,6 @@ class Records extends Backend
 {
     public function renderContent()
     {
-        return new ObjectList($this->controller->getRecords(), 'Record');
+        return new ObjectList($this->controller->getRecords(), 'record');
     }
 }

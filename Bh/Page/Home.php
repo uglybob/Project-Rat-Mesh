@@ -12,7 +12,7 @@ class Home extends Page
         $content = '<div>this is home and you are ' . $userString . '</div>';
 
         if ($this->controller->getCurrentUser()) {
-            $content .= new ObjectList($this->controller->getCurrentRecords(), 'Record');
+            $content .= new ObjectList($this->controller->getCurrentRecords(), 'record');
         }
 
         return $content;
