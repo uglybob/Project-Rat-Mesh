@@ -72,6 +72,11 @@ class EditRecord extends EditForm
     // {{{ instantiateObject
     protected function instantiateObject()
     {
+        $now = new \DateTime('now');
+        $values['Start-Date'] = $this->toDate($now);
+        $values['Start-Time'] = $this->toTime($now);
+
+        $this->form->populate($values);
     }
     // }}}
 
