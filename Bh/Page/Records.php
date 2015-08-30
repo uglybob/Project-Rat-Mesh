@@ -2,10 +2,10 @@
 
 namespace Bh\Page;
 
-class Records extends Backend
+class Records extends PRMBackend
 {
     public function renderContent()
     {
-        return new ObjectList($this->controller->getRecords(), 'record');
+        return parent::renderContent(new ObjectList($this->controller->getRecords(), 'record'));
     }
 }

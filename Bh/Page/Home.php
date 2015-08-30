@@ -2,7 +2,7 @@
 
 namespace Bh\Page;
 
-class Home extends Page
+class Home extends PRMPage
 {
     public function renderContent()
     {
@@ -15,6 +15,6 @@ class Home extends Page
             $content .= new ObjectList($this->controller->getCurrentRecords(), 'record');
         }
 
-        return $content;
+        return parent::renderContent($content);
     }
 }
