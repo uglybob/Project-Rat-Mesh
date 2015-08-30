@@ -100,6 +100,8 @@ class PRM extends Controller
      // {{{ addAttribute
     protected function addAttribute($type, $name)
     {
+        $this->logAction('add', $type, $name);
+
         $attribute = null;
         $name = trim($name);
 
@@ -176,7 +178,21 @@ class PRM extends Controller
         $record->setCategory($this->addCategory($category));
         $record->setTags($this->addTags($tags));
 
+        $this->logAction(
+            'edit',
+            'Record',
+            $id . '|' . implode('|',  $record->getRow())
+        );
+
         Mapper::commit($record);
+    }
+    // }}}
+
+    // {{{ logAction
+    public function logAction($action, $class, $content)
+    {
+        $user = $this->getCurrentUser();
+        Log::log('(' . $user->getId() . ') ' . $user->getEmail() . ' : ' . $action . ' : ' . $content);
     }
     // }}}
 }
