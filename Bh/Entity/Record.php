@@ -48,12 +48,19 @@ class Record extends EntryInterface
     // {{{ getRow
     public function getRow()
     {
+        $length = null;
+
+        if ($this->end) {
+            $length = $this->end->diff($this->start)->format('%H:%I');
+        }
+
         return [
             $this->getStart()->format('H:i d.m.Y'),
             $this->getActivity(),
             '@',
             $this->getCategory(),
             implode(', ',$this->getTags()),
+            $length,
         ];
     }
     // }}}
