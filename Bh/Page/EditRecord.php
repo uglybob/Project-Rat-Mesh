@@ -65,7 +65,7 @@ class EditRecord extends EditForm
     // {{{ redirect
     protected function redirect()
     {
-        Page::redirect('/Records');
+        Page::redirect('/records');
     }
     // }}}
 
