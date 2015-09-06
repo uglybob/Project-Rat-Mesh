@@ -68,6 +68,44 @@ class PRM extends Controller
     }
     // }}}
 
+    // {{{ getEntryTagAssocs
+    protected function getEntryTagAssocs($entry, array $tags)
+    {
+        $assocs = Mapper::findBy(
+            'EntryTagAssoc',
+            [
+                'entry' => $entry,
+                'tag' => $tags,
+            ]
+        );
+
+        return $assocs;
+    }
+    // }}}
+    // {{{ addTagAssocs
+    protected function addEntryTagAssocs($entry, array $tags)
+    {
+        $assocs = $this->getEntryTagAssocs($entry, $tags);
+
+        $tagIndex = [];
+        foreach ($tags as $tag) {
+            $tagIndex[$tag->__toString()] = $tag;
+        }
+
+        foreach ($assocs as $assoc) {
+            unset($tagIndex[$assoc->getTag()->__toString()]);
+        }
+
+        foreach($tagIndex as $tag) {
+            $assoc = new EntryTagAssoc($entry, $tag);
+            $this->entry->addEntryTagAssoc($assoc);
+            $tag->addEntryTagAssoc($assoc);
+
+            Mapper::save($assoc);
+        }
+    }
+    // }}}
+
      // {{{ getAttribute
     protected function getAttribute($type, $name)
     {

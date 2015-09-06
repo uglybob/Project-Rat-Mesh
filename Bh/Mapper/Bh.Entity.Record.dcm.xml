@@ -4,8 +4,8 @@
     http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
     <entity name="Bh\Entity\Record" table="records">
-        <one-to-one field="entry" target-entity="Entry" />
         <field name="start" type="datetime" />
         <field name="end" type="datetime" nullable="true" />
+        <many-to-many target-entity="Tag" field="tags" />
     </entity>
 </doctrine-mapping>

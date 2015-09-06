@@ -2,18 +2,19 @@
 
 namespace Bh\Entity;
 
-class Record extends EntryInterface
+class Record extends Entry
 {
     protected $start;
     protected $end;
+    protected $tags;
 
     // {{{ constructor
-    public function __construct(User $user)
+    public function __construct($user)
     {
-        parent::__construct($user);
-
         $this->start = new \DateTime('now');
         $this->end = null;
+
+        parent::__construct($user);
     }
     // }}}
 
@@ -42,6 +43,19 @@ class Record extends EntryInterface
         }
 
         return $output;
+    }
+    // }}}
+
+    // {{{ addTag
+    public function addTag($tag)
+    {
+        $this->tags[] = $tag;
+    }
+    // }}}
+    // {{{ removeTag
+    public function removeTag($tag)
+    {
+        $this->tags->removeElement($tag);
     }
     // }}}
 
