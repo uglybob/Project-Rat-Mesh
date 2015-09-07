@@ -68,44 +68,6 @@ class PRM extends Controller
     }
     // }}}
 
-    // {{{ getEntryTagAssocs
-    protected function getEntryTagAssocs($entry, array $tags)
-    {
-        $assocs = Mapper::findBy(
-            'EntryTagAssoc',
-            [
-                'entry' => $entry,
-                'tag' => $tags,
-            ]
-        );
-
-        return $assocs;
-    }
-    // }}}
-    // {{{ addTagAssocs
-    protected function addEntryTagAssocs($entry, array $tags)
-    {
-        $assocs = $this->getEntryTagAssocs($entry, $tags);
-
-        $tagIndex = [];
-        foreach ($tags as $tag) {
-            $tagIndex[$tag->__toString()] = $tag;
-        }
-
-        foreach ($assocs as $assoc) {
-            unset($tagIndex[$assoc->getTag()->__toString()]);
-        }
-
-        foreach($tagIndex as $tag) {
-            $assoc = new EntryTagAssoc($entry, $tag);
-            $this->entry->addEntryTagAssoc($assoc);
-            $tag->addEntryTagAssoc($assoc);
-
-            Mapper::save($assoc);
-        }
-    }
-    // }}}
-
      // {{{ getAttribute
     protected function getAttribute($type, $name)
     {
@@ -138,9 +100,9 @@ class PRM extends Controller
      // {{{ addAttribute
     protected function addAttribute($type, $name)
     {
-        $this->logAction('add', $type, $name);
-
         $attribute = null;
+
+        $name = (is_object($name)) ? $name->__toString() : $name;
         $name = trim($name);
 
         if (!empty($name)) {
@@ -201,28 +163,30 @@ class PRM extends Controller
     }
     // }}}
     // {{{ editRecord
-    public function editRecord($id, $start, $end, $activity, $category, $tags)
+    public function editRecord(Record $newRecord)
     {
-        $record = $this->getRecord($id);
+        if ($newRecord->getUser() === $this->getCurrentUser()) {
+            if (
+                ($newRecord->getId() && $this->getRecord($newRecord->getId()))
+                || is_null($newRecord->getId())
+            ) {
+                $newRecord->setActivity($this->addActivity($newRecord->getActivity()));
+                $newRecord->setCategory($this->addCategory($newRecord->getCategory()));
+                $newRecord->setTags($this->addTags($newRecord->getTags()));
 
-        if (is_null($record)) {
-            $record = new Record($this->getCurrentUser());
-            Mapper::save($record);
-        }
+                if (is_null($newRecord->getId())) {
+                    Mapper::save($newRecord);
+                }
 
-        $record->setStart($start);
-        $record->setEnd($end);
-        $record->setActivity($this->addActivity($activity));
-        $record->setCategory($this->addCategory($category));
-        $record->setTags($this->addTags($tags));
+                $this->logAction(
+                    'edit',
+                    'Record',
+                    $newRecord->getId() . '|' . implode('|',  $newRecord->getRow())
+                );
 
-        $this->logAction(
-            'edit',
-            'Record',
-            $id . '|' . implode('|',  $record->getRow())
-        );
-
-        Mapper::commit($record);
+                Mapper::commit();
+            }
+       }
     }
     // }}}
 

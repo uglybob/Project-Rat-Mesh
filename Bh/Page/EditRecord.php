@@ -49,17 +49,15 @@ class EditRecord extends EditForm
     // {{{ save
     protected function save()
     {
-        $id = ($this->object) ? $this->object->getId() : null;
         $values = $this->form->getValues();
 
-        $this->controller->editRecord(
-            $id,
-            $this->toDateTime($values['Start-Time'], $values['Start-Date']),
-            $this->toDateTime($values['End-Time'], $values['End-Date']),
-            $values['Activity'],
-            $values['Category'],
-            explode(',', $values['Tags'])
-        );
+        $this->object->setЅtart($this->toDateTime($values['Start-Time'], $values['Start-Date']));
+        $this->object->setEnd($this->toDateTime($values['End-Time'], $values['End-Date']));
+        $this->object->setActivity($values['Activity']);
+        $this->object->setCategory($values['Category']);
+        $this->object->setTags(explode(',', $values['Tags']));
+
+        $this->controller->editRecord($this->object);
     }
     // }}}
     // {{{ redirect
@@ -72,11 +70,7 @@ class EditRecord extends EditForm
     // {{{ instantiateObject
     protected function instantiateObject()
     {
-        $now = new \DateTime('now');
-        $values['Start-Date'] = $this->toDate($now);
-        $values['Start-Time'] = $this->toTime($now);
-
-        $this->form->populate($values);
+        $this->object = new \Bh\Entity\Record($this->controller->getCurrentUser());
     }
     // }}}
 

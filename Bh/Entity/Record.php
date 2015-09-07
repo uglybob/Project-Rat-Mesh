@@ -11,6 +11,7 @@ class Record extends Entry
     // {{{ constructor
     public function __construct($user)
     {
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
         $this->start = new \DateTime('now');
         $this->end = null;
 
@@ -46,6 +47,22 @@ class Record extends Entry
     }
     // }}}
 
+    // {{{ getTags
+    public function getTags()
+    {
+        return $this->tags->toArray();
+    }
+    // }}}
+    // {{{ setTags
+    public function setTags($newTags)
+    {
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+
+        foreach ($newTags as $newTag) {
+            $this->addTag($newTag);
+        }
+    }
+    // }}}
     // {{{ addTag
     public function addTag($tag)
     {
