@@ -51,7 +51,7 @@ class EditRecord extends EditForm
     {
         $values = $this->form->getValues();
 
-        $this->object->setЅtart($this->toDateTime($values['Start-Time'], $values['Start-Date']));
+        $this->object->setStart($this->toDateTime($values['Start-Time'], $values['Start-Date']));
         $this->object->setEnd($this->toDateTime($values['End-Time'], $values['End-Date']));
         $this->object->setActivity($values['Activity']);
         $this->object->setCategory($values['Category']);
