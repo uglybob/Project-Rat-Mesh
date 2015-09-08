@@ -13,7 +13,10 @@ class EditRecord extends EditForm
         );
         $this->form->addText(
             'Category',
-            ['list' => $this->controller->getCategories()]
+            [
+                'list' => $this->controller->getCategories(),
+                'required' => true,
+            ]
         )->setRequired();
 
         $this->form->addText('Tags');
@@ -21,7 +24,10 @@ class EditRecord extends EditForm
         $this->form->addDate('Start-Date');
         $this->form->addTime('Start-Time');
 
-        $this->form->addDate('End-Date');
+        $this->form->addDate(
+            'End-Date',
+            ['list' => [(new \DateTime('now'))->format('d.m.Y')]]
+        );
         $this->form->addTime('End-Time');
     }
     // }}}
