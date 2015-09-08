@@ -79,11 +79,7 @@ class Record extends Entry
     // {{{ getRow
     public function getRow()
     {
-        $length = null;
-
-        if ($this->end) {
-            $length = $this->end->diff($this->start)->format('%H:%I');
-        }
+        $end = (is_null($this->end)) ? new \DateTime('now') : $this->end;
 
         return [
             $this->getStart()->format('H:i d.m.Y'),
@@ -91,7 +87,7 @@ class Record extends Entry
             '@',
             $this->getCategory(),
             implode(', ',$this->getTags()),
-            $length,
+            $end->diff($this->start)->format('%H:%I'),
         ];
     }
     // }}}
