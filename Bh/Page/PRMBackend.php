@@ -2,8 +2,6 @@
 
 namespace Bh\Page;
 
-use Bh\Lib\Html;
-
 class PRMBackend extends Backend
 {
     public function renderContent($content)

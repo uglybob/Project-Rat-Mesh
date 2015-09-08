@@ -2,10 +2,9 @@
 
 namespace Bh\Page;
 
-use Bh\Lib\Html;
-
 class PRMPage extends Page
 {
+    // {{{ renderContent
     public function renderContent($content)
     {
         $links = [
@@ -17,4 +16,5 @@ class PRMPage extends Page
 
         return Html::menu($links) . $content;
     }
+    // }}}
 }
