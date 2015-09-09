@@ -5,11 +5,9 @@ body {
 
 #wrapper {
     margin          : 0px auto 0px auto;
-    width           : 700px;
+    width           : 701px;
 }
 
-.objectList * {
-}
 .start {
     float : left;
     width : 90px;
@@ -22,4 +20,8 @@ body {
 
 .length {
     float : right;
+}
+
+.day {
+    padding-top : 20px;
 }
