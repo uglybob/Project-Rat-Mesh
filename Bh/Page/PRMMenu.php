@@ -7,28 +7,36 @@ class PRMMenu
     protected $links;
 
     // {{{ constructor
-    public function __construct($backend = false)
+    public function __construct($user = null)
     {
-        if ($backend) {
-            $this->links = [
+        if ($user) {
+            $linksLeft = [
                 'home' => '/',
                 'records' => '/records',
-                'user' => '/user',
                 'logout' => '/login',
             ];
+            $linksRight = [
+                $user->getEmail() => '/user',
+            ];
         } else {
-            $this->links = [
+            $linksLeft = [
                 'home' => '/',
-                'register' => '/user',
                 'login' => '/login',
             ];
+            $linksRight = [
+                'register' => '/user',
+            ];
         }
+
+        $this->menu = HTML::div(['class' => 'menuLeft'], HTML::menu($linksLeft))
+            . HTML::div(['class' => 'menuRight'], HTML::menu($linksRight))
+            . HTML::div(['class' => 'clearFix']);
     }
     // }}}
     // {{{ toString
     public function __toString()
     {
-        return Html::menu($this->links) . $content;
+        return $this->menu;
     }
     // }}}
 }

@@ -9,8 +9,6 @@ class Home extends PRMPage
         $user = $this->controller->getCurrentUser();
         $userString = ($user) ? $user->getEmail() : 'not logged in';
 
-        $content = HTML::div("this is home and you are $userString");
-
         if ($this->controller->getCurrentUser()) {
             $content .= new RecordList($this->controller->getCurrentRecords(), 'record', true, false);
         }

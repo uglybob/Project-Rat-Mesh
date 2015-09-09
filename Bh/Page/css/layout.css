@@ -22,17 +22,29 @@ body {
     float : right;
 }
 
-#menu {
+.menu {
     padding-top : 10px;
-    padding-bottom : 50px;
+    padding-bottom : 40px;
 }
 
-#menu a {
+.menuLeft a {
     margin-right : 10px;
 }
 
+.menuRight {
+    float : right;
+}
+
+.menuLeft{
+    float : left;
+}
+
+.clearFix {
+    clear : both;
+}
+
 .objectList {
-    padding-bottom : 30px;
+    padding-bottom : 25px;
 }
 
 .objectRow {
