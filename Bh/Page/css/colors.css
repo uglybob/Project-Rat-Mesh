@@ -1,10 +1,7 @@
-body {
+body a {
+    color : #555;
 }
 
 .day {
-    color : #000;
-}
-
-.objectList a {
-    color : #333;
+    color : #111;
 }

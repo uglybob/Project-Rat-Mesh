@@ -12,15 +12,15 @@ class PRMMenu
         if ($backend) {
             $this->links = [
                 'home' => '/',
-                'login' => '/login',
                 'records' => '/records',
                 'user' => '/user',
+                'logout' => '/login',
             ];
         } else {
             $this->links = [
                 'home' => '/',
-                'login' => '/login',
                 'register' => '/user',
+                'login' => '/login',
             ];
         }
     }

@@ -25,3 +25,7 @@ body {
 .day {
     padding-top : 20px;
 }
+
+#menu a {
+    padding-right : 10px;
+}
