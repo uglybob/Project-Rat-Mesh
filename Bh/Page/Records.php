@@ -12,7 +12,7 @@ class Records extends PRMBackend
 
         foreach ($records as $day => $dayRecords) {
             $content .= HTML::div(['class' => 'day'], $day);
-            $content .= new RecordList($dayRecords, 'record', false);
+            $content .= new RecordList($dayRecords, 'record', false, false);
         }
 
         return parent::renderContent(HTML::div($content));

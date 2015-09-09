@@ -12,10 +12,10 @@ class RecordList extends ObjectList
         $endString = ($end) ? ' - ' . $end->format('H:i') : '';
 
         return [
-            $record->getStart()->format('H:i') . $endString,
-            $record->getActivity() . '@' . $record->getCategory(),
-            implode(', ', $record->getTags()),
-            $tempEnd->diff($record->getStart())->format('%H:%I'),
+            'start' => $record->getStart()->format('H:i') . $endString,
+            'activity' => $record->getActivity() . '@' . $record->getCategory(),
+            'tags' => implode(', ', $record->getTags()),
+            'length' => $tempEnd->diff($record->getStart())->format('%H:%I'),
         ];
     }
     // }}}
