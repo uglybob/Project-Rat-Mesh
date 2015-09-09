@@ -46,6 +46,13 @@ class Record extends Entry
         return $output;
     }
     // }}}
+    // {{{ getLength
+    public function getLength()
+    {
+        $tempEnd = (is_null($this->getEnd())) ? new \DateTime('now') : $this->getEnd();
+        return $tempEnd->diff($this->getStart());
+    }
+    // }}}
 
     // {{{ getTags
     public function getTags()
