@@ -22,10 +22,19 @@ body {
     float : right;
 }
 
-.day {
-    padding-top : 20px;
+#menu {
+    padding-top : 10px;
+    padding-bottom : 50px;
 }
 
 #menu a {
     padding-right : 10px;
+}
+
+.objectList {
+    padding-bottom : 40px;
+}
+
+.day {
+    padding-bottom : 3px;
 }
