@@ -5,3 +5,8 @@ body a {
 .day {
     color : #111;
 }
+
+
+.objectRow:hover {
+    background-color: #EEE;
+}
