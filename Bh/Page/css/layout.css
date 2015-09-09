@@ -54,3 +54,7 @@ body {
 .day {
     padding-bottom : 3px;
 }
+
+.day .date, .day .length {
+    display : inline;
+}
