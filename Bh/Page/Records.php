@@ -4,8 +4,12 @@ namespace Bh\Page;
 
 class Records extends PRMBackend
 {
+    // {{{ renderContent
     public function renderContent()
     {
-        return parent::renderContent(new ObjectList($this->controller->getRecords(), 'record'));
+        $content = new RecordList($this->controller->getRecords(), 'record');
+
+        return parent::renderContent($content);
     }
+    // }}}
 }

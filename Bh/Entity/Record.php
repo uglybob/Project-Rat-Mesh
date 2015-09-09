@@ -75,20 +75,4 @@ class Record extends Entry
         $this->tags->removeElement($tag);
     }
     // }}}
-
-    // {{{ getRow
-    public function getRow()
-    {
-        $end = (is_null($this->end)) ? new \DateTime('now') : $this->end;
-
-        return [
-            $this->getStart()->format('H:i d.m.Y'),
-            $this->getActivity(),
-            '@',
-            $this->getCategory(),
-            implode(', ',$this->getTags()),
-            $end->diff($this->start)->format('%H:%I'),
-        ];
-    }
-    // }}}
 }
