@@ -7,9 +7,28 @@ class Records extends PRMBackend
     // {{{ renderContent
     public function renderContent()
     {
-        $content = new RecordList($this->controller->getRecords(), 'record');
+        $content = '';
+        $records = $this->splitRecords($this->controller->getRecords());
 
-        return parent::renderContent($content);
+        foreach ($records as $day => $dayRecords) {
+            $content .= HTML::div(['class' => 'day'], $day);
+            $content .= new RecordList($dayRecords, 'record', false);
+        }
+
+        return parent::renderContent(HTML::div($content));
+    }
+    // }}}
+
+    // {{{ splitRecords
+    public function splitRecords($records)
+    {
+        $result = [];
+
+        foreach ($records as $record) {
+            $result[$record->getStart()->format('l, M j')][] = $record;
+        }
+
+        return $result;
     }
     // }}}
 }

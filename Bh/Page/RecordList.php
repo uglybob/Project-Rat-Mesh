@@ -7,13 +7,15 @@ class RecordList extends ObjectList
     // {{{ getProperties
     public function getProperties($record)
     {
-        $end = (is_null($record->getEnd())) ? new \DateTime('now') : $record->getEnd();
+        $end = $record->getEnd();
+        $tempEnd = (is_null($end)) ? new \DateTime('now') : $end;
+        $endString = ($end) ? ' - ' . $end->format('H:i') : '';
 
         return [
-            $record->getStart()->format('H:i d.m.Y'),
+            $record->getStart()->format('H:i') . $endString,
             $record->getActivity() . '@' . $record->getCategory(),
             implode(', ', $record->getTags()),
-            $end->diff($record->getStart())->format('%H:%I'),
+            $tempEnd->diff($record->getStart())->format('%H:%I'),
         ];
     }
     // }}}
