@@ -13,17 +13,17 @@ class PRMMenu
             $linksLeft = [
                 'home' => '/',
                 'records' => '/records',
-                'logout' => '/login',
             ];
             $linksRight = [
+                'logout' => '/login',
                 $user->getEmail() => '/user',
             ];
         } else {
             $linksLeft = [
                 'home' => '/',
-                'login' => '/login',
             ];
             $linksRight = [
+                'login' => '/login',
                 'register' => '/user',
             ];
         }

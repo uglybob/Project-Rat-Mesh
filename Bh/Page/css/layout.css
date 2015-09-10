@@ -31,6 +31,10 @@ body {
     margin-right : 10px;
 }
 
+.menuRight a {
+    margin-left : 10px;
+}
+
 .menuRight {
     float : right;
 }
