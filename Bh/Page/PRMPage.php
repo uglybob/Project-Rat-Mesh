@@ -14,6 +14,12 @@ class PRMPage extends Page
         parent::__construct($controller, $path);
     }
     // }}}
+    // {{{ hookTitle
+    public function hookTitle()
+    {
+        return 'Project Rat Mesh';
+    }
+    // }}}
     // {{{ renderContent
     public function renderContent($content)
     {

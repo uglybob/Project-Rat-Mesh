@@ -14,8 +14,16 @@ class PRMBackend extends Backend
         parent::__construct($controller, $path);
     }
     // }}}
+    // {{{ hookTitle
+    public function hookTitle()
+    {
+        return 'Project Rat Mesh';
+    }
+    // }}}
+    // {{{ renderContent
     public function renderContent($content)
     {
         return (new PRMMenu($this->controller->getCurrentUser())) . $content;
     }
+    // }}}
 }

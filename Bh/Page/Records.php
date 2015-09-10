@@ -32,7 +32,12 @@ class Records extends PRMBackend
         return parent::renderContent(HTML::div($content));
     }
     // }}}
-
+    // {{{ hookTitle
+    public function hookTitle()
+    {
+        return 'Records';
+    }
+    // }}}
     // {{{ splitRecords
     public function splitRecords($records)
     {

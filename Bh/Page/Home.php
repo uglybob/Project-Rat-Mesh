@@ -4,6 +4,13 @@ namespace Bh\Page;
 
 class Home extends PRMPage
 {
+    // {{{ hookTitle
+    public function hookTitle()
+    {
+        return 'Project Rat Mesh';
+    }
+    // }}}
+    // {{{ renderContent
     public function renderContent()
     {
         $user = $this->controller->getCurrentUser();
@@ -15,4 +22,5 @@ class Home extends PRMPage
 
         return parent::renderContent($content);
     }
+    // }}}
 }
