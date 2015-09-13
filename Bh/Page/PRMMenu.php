@@ -13,6 +13,7 @@ class PRMMenu
             $linksLeft = [
                 'home' => '/',
                 'records' => '/records',
+                'totals' => '/totals',
             ];
             $linksRight = [
                 'logout' => '/login',

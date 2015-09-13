@@ -15,10 +15,16 @@ class PRM extends Controller
         return $this->getAttribute('Category', $name);
     }
     // }}}
-     // {{{ getCategories
+    // {{{ getCategories
     public function getCategories()
     {
         return $this->getAttributes('Category');
+    }
+    // }}}
+    // {{{ getCategoriesLengths
+    public function getCategoriesLengths()
+    {
+        return $this->getAttributesLengths('category', 'categories');
     }
     // }}}
     // {{{ addCategory
@@ -40,6 +46,12 @@ class PRM extends Controller
         return $this->getAttributes('Activity');
     }
     // }}}
+    // {{{ getActivitiesLengths
+    public function getActivitiesLengths()
+    {
+        return $this->getAttributesLengths('activity', 'activities');
+    }
+    // }}}
     // {{{ addActivity
     public function addActivity($name)
     {
@@ -47,6 +59,12 @@ class PRM extends Controller
     }
     // }}}
 
+     // {{{ getTags
+    public function getTags()
+    {
+        return $this->getAttributes('Tag');
+    }
+    // }}}
     // {{{ addTag
     public function addTag($name)
     {
@@ -65,6 +83,28 @@ class PRM extends Controller
         }
 
         return $tags;
+    }
+    // }}}
+    // {{{ getTagsLengths
+    public function getTagsLengths()
+    {
+        $conn = Mapper::getEntityManager()->getConnection();
+        $sql = "SELECT tags.name, SUM(TIME_TO_SEC(TIMEDIFF(end, start))) AS length
+            FROM record_tag
+            JOIN tags
+            ON tag_id = tags.id
+            JOIN records
+            ON record_id=records.id
+            WHERE (
+                tags.user_id={$this->getCurrentUser()->getId()}
+                AND records.deleted=false
+                AND tags.deleted=false
+            )
+            GROUP BY tags.id
+            ORDER BY length DESC";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
     // }}}
 
@@ -95,6 +135,27 @@ class PRM extends Controller
         );
 
         return $attributes;
+    }
+    // }}}
+    // {{{ getAttributesLengths
+    protected function getAttributesLengths($attribute, $table)
+    {
+        $conn = Mapper::getEntityManager()->getConnection();
+        $sql = "SELECT a.name, SUM(TIME_TO_SEC(TIMEDIFF(r.end, r.start))) AS length
+            FROM records AS r
+            JOIN {$table} AS a
+            ON r.{$attribute}_id=a.id
+            WHERE (
+                r.user_id = {$this->getCurrentUser()->getId()}
+                AND r.deleted = false
+                AND a.deleted = false
+            )
+            GROUP BY r.{$attribute}_id
+            ORDER BY length DESC";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
     // }}}
      // {{{ addAttribute
