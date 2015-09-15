@@ -22,9 +22,9 @@ class Records extends PRMBackend
             $lengthTotal = $startTotal->diff($endTotal);
             $lengthString = ($lengthTotal->h > 0) ? $lengthTotal->format('%hh %Im') : $lengthTotal->format('%Im');
 
-            $content .= HTML::div(['class' => 'day'],
-                HTML::div(['class' => 'date'], $day) .
-                HTML::div(['class' => 'length'], $lengthString)
+            $content .= HTML::div(['.day'],
+                HTML::div(['.date'], $day) .
+                HTML::div(['.length'], $lengthString)
             );
             $content .= new RecordList($dayRecords, 'record', false, false);
         }

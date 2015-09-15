@@ -29,9 +29,9 @@ class PRMMenu
             ];
         }
 
-        $this->menu = HTML::div(['class' => 'menuLeft'], HTML::menu($linksLeft))
-            . HTML::div(['class' => 'menuRight'], HTML::menu($linksRight))
-            . HTML::div(['class' => 'clearFix']);
+        $this->menu = HTML::div(['.menuLeft'], HTML::menu($linksLeft))
+            . HTML::div(['.menuRight'], HTML::menu($linksRight))
+            . HTML::div(['.clearFix']);
     }
     // }}}
     // {{{ toString
