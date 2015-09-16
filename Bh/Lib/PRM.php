@@ -195,16 +195,27 @@ class PRM extends Controller
     }
     // }}}
     // {{{ getRecords
-    public function getRecords()
+    public function getRecords($start = null, $end = null)
     {
-        $records = Mapper::findBy(
-            'Record',
-            ['user' => $this->getCurrentUser()],
-            false,
-            ['start' => 'ASC']
-        );
+        $dateClause = '';
 
-        return $records;
+        if ($start) { $dateClause .= ' AND r.start >= :start'; }
+        if ($end) { $dateClause .= ' AND r.start <= :end'; }
+
+        $query = Mapper::getEntityManager()->createQuery("
+            SELECT r
+            FROM Bh\Entity\Record r
+            WHERE r.user = :user
+            AND r.deleted = false
+            $dateClause
+            ORDER BY r.start ASC
+        ");
+
+        $query->setParameter('user', $this->getCurrentUser());
+        if ($start) { $query->setParameter('start', $start); }
+        if ($end) { $query->setParameter('end', $end); }
+
+        return $query->getResult();
     }
     // }}}
     // {{{ getCurrentRecords

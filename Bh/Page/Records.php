@@ -7,11 +7,11 @@ class Records extends PRMBackend
     // {{{ renderContent
     public function renderContent()
     {
-        $content = '';
-        $records = $this->splitRecords($this->controller->getRecords());
+        $timespan = new TimespanSelector();
+        $content = $timespan; 
+        $records = $this->splitRecords($this->controller->getRecords($timespan->getStart(), $timespan->getEnd()));
 
         foreach ($records as $day => $dayRecords) {
-
             $startTotal = new \DateTime('00:00');
             $endTotal = clone $startTotal;
 

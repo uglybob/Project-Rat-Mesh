@@ -7,7 +7,7 @@ class Totals extends PRMBackend
     // {{{ renderContent
     public function renderContent()
     {
-        $content = '';
+        $content = new TimespanSelector();
 
         if ($this->controller->getCurrentUser()) {
             $content .= $this->attributeList('categories', $this->controller->getCategoriesLengths());
