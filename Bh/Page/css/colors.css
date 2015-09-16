@@ -1,11 +1,10 @@
-body a {
+body, a {
     color : #444;
 }
 
-.day {
+.title {
     color : #111;
 }
-
 
 .objectRow:hover, .row:hover {
     background-color: #eee
