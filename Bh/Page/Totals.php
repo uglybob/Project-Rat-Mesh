@@ -18,7 +18,14 @@ class Totals extends PRMBackend
         return parent::renderContent($content);
     }
     // }}}
+    // {{{ hookTitle
+    public function hookTitle()
+    {
+        return 'Totals';
+    }
+    // }}}
 
+    // {{{ attributeList
     protected function attributeList($type, $attributes)
     {
         $list = '';
@@ -39,4 +46,5 @@ class Totals extends PRMBackend
             HTML::div(['.title'], ucfirst($type)) . $list
         );
     }
+    // }}}
 }

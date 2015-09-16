@@ -2,14 +2,13 @@ html * {
     font-family     : Verdana, Tahoma, Arial, Helvetica, Sans-Serif;
     font-size       : 14px;
     line-height     : 22px;
-    text-decoration : none;
 }
 
 ul {
     list-style-type : none;
 }
 
-a {
+html *, a {
     text-decoration : none;
 }
 

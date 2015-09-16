@@ -7,6 +7,6 @@ body a {
 }
 
 
-.objectRow:hover {
+.objectRow:hover, .row:hover {
     background-color: #eee
 }
