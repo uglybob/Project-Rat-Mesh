@@ -1,11 +1,11 @@
 body {
-    margin          : 0px;
-    overflow-y      : scroll;
+    margin : 0px;
+    overflow-y : scroll;
 }
 
 #wrapper {
-    margin          : 0px auto 0px auto;
-    width           : 650px;
+    margin : 0px auto 0px auto;
+    width : 650px;
 }
 
 .start {
@@ -47,18 +47,18 @@ body {
     clear : both;
 }
 
-.objectList {
+.objectList, .attributeList {
     padding-bottom : 25px;
 }
 
-.objectRow {
+.objectRow, .row {
     height : 22px;
 }
 
-.day {
+.title {
     padding-bottom : 3px;
 }
 
-.day .date, .day .length {
+.title > div, .row > div {
     display : inline;
 }

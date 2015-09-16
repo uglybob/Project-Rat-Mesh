@@ -22,7 +22,7 @@ class Records extends PRMBackend
             $lengthTotal = $startTotal->diff($endTotal);
             $lengthString = ($lengthTotal->h > 0) ? $lengthTotal->format('%hh %Im') : $lengthTotal->format('%Im');
 
-            $content .= HTML::div(['.day'],
+            $content .= HTML::div(['.title'],
                 HTML::div(['.date'], $day) .
                 HTML::div(['.length'], $lengthString)
             );

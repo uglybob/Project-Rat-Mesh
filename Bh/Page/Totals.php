@@ -28,12 +28,15 @@ class Totals extends PRMBackend
             $hours = $length / 3600;
             $lengthString = round($hours, 1);
 
-            $list .= HTML::div(
+            $list .= HTML::div(['.row'],
                 HTML::div(['.attribute'], $attribute['name']) .
                 HTML::div(['.length'], $lengthString)
             );
         }
 
-        return HTML::div(['.attributeList', ".$type"], $list);
+        return HTML::div(
+            ['.attributeList', ".$type"],
+            HTML::div(['.title'], ucfirst($type)) . $list
+        );
     }
 }
