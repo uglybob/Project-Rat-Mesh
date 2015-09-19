@@ -22,9 +22,9 @@ class PRM extends Controller
     }
     // }}}
     // {{{ getCategoriesLengths
-    public function getCategoriesLengths()
+    public function getCategoriesLengths($start = null, $end = null)
     {
-        return $this->getAttributesLengths('category', 'categories');
+        return $this->getAttributesLengths('category', 'categories', $start, $end);
     }
     // }}}
     // {{{ addCategory
@@ -47,9 +47,9 @@ class PRM extends Controller
     }
     // }}}
     // {{{ getActivitiesLengths
-    public function getActivitiesLengths()
+    public function getActivitiesLengths($start = null, $end = null)
     {
-        return $this->getAttributesLengths('activity', 'activities');
+        return $this->getAttributesLengths('activity', 'activities', $start, $end);
     }
     // }}}
     // {{{ addActivity
@@ -86,7 +86,7 @@ class PRM extends Controller
     }
     // }}}
     // {{{ getTagsLengths
-    public function getTagsLengths()
+    public function getTagsLengths($start = null, $end = null)
     {
         $conn = Mapper::getEntityManager()->getConnection();
         $sql = "SELECT tags.name, SUM(TIME_TO_SEC(TIMEDIFF(end, start))) AS length
@@ -99,10 +99,14 @@ class PRM extends Controller
                 tags.user_id={$this->getCurrentUser()->getId()}
                 AND records.deleted=false
                 AND tags.deleted=false
+                {$this->sqlDateClause($start, $end, 'records')}
             )
             GROUP BY tags.id
             ORDER BY length DESC";
         $stmt = $conn->prepare($sql);
+        if ($start) { $stmt->bindParam('start', $start->format("Y-m-d H:i:s")); }
+        if ($end) { $stmt->bindParam('end', $end->format("Y-m-d H:i:s")); }
+
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -138,7 +142,7 @@ class PRM extends Controller
     }
     // }}}
     // {{{ getAttributesLengths
-    protected function getAttributesLengths($attribute, $table)
+    protected function getAttributesLengths($attribute, $table, $start, $end)
     {
         $conn = Mapper::getEntityManager()->getConnection();
         $sql = "SELECT a.name, SUM(TIME_TO_SEC(TIMEDIFF(r.end, r.start))) AS length
@@ -149,11 +153,15 @@ class PRM extends Controller
                 r.user_id = {$this->getCurrentUser()->getId()}
                 AND r.deleted = false
                 AND a.deleted = false
+                {$this->sqlDateClause($start, $end, 'r')}
             )
             GROUP BY r.{$attribute}_id
             ORDER BY length DESC";
 
         $stmt = $conn->prepare($sql);
+        if ($start) { $stmt->bindParam('start', $start->format("Y-m-d H:i:s")); }
+        if ($end) { $stmt->bindParam('end', $end->format("Y-m-d H:i:s")); }
+
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -197,17 +205,12 @@ class PRM extends Controller
     // {{{ getRecords
     public function getRecords($start = null, $end = null)
     {
-        $dateClause = '';
-
-        if ($start) { $dateClause .= ' AND r.start >= :start'; }
-        if ($end) { $dateClause .= ' AND r.start <= :end'; }
-
         $query = Mapper::getEntityManager()->createQuery("
             SELECT r
             FROM Bh\Entity\Record r
             WHERE r.user = :user
             AND r.deleted = false
-            $dateClause
+            {$this->sqlDateClause($start, $end, 'r')}
             ORDER BY r.start ASC
         ");
 
@@ -262,6 +265,17 @@ class PRM extends Controller
     }
     // }}}
 
+    // {{{ sqlDateClause
+    protected function sqlDateClause($start, $end, $tableName)
+    {
+        $dateClause = '';
+
+        if ($start) { $dateClause .= " AND $tableName.start >= :start "; }
+        if ($end) { $dateClause .= " AND $tableName.start <= :end "; }
+
+        return $dateClause;
+    }
+    // }}}
     // {{{ logAction
     public function logAction($action, $class, $content)
     {

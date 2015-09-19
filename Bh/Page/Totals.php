@@ -7,12 +7,16 @@ class Totals extends PRMBackend
     // {{{ renderContent
     public function renderContent()
     {
-        $content = new TimespanSelector();
+        $timespan = new TimespanSelector();
+        $content = $timespan;
+
+        $start = $timespan->getStart();
+        $end = $timespan->getEnd();
 
         if ($this->controller->getCurrentUser()) {
-            $content .= $this->attributeList('categories', $this->controller->getCategoriesLengths());
-            $content .= $this->attributeList('activities', $this->controller->getActivitiesLengths());
-            $content .= $this->attributeList('tags', $this->controller->getTagsLengths());
+            $content .= $this->attributeList('categories', $this->controller->getCategoriesLengths($start, $end));
+            $content .= $this->attributeList('activities', $this->controller->getActivitiesLengths($start, $end));
+            $content .= $this->attributeList('tags', $this->controller->getTagsLengths($start, $end));
         }
 
         return parent::renderContent($content);
