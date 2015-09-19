@@ -4,24 +4,36 @@ namespace Bh\Page;
 
 class TimespanSelector
 {
+    protected $start;
+    protected $end;
+
+    protected $uri;
+    protected $unit;
+    protected $units = ['week', 'month', 'year', 'custom'];
+    protected $offset;
+
     // {{{ constructor
     public function __construct()
     {
         $uriParts = explode('/', $_SERVER['REQUEST_URI']);
         $this->uri = $uriParts[1];
-        $this->unit = isset($uriParts[2]) ? (int) $uriParts[2] : 0;
-        $this->offset = isset($uriParts[3]) ? (int) $uriParts[3] : 0;
 
-        if ($this->unit === 0) {
-            $this->start = new \Datetime();
-            $this->start->setTimestamp(strtotime('previous monday'));
-            if ($this->offset >= 0) {
-                $this->start->add(new \DateInterval('P' . ($this->offset * 7) . 'D'));
-            } else {
-                $offset = -$this->offset;
-                $this->start->sub(new \DateInterval('P' . ($offset * 7) . 'D'));
-            }
+        $unitIndex = isset($uriParts[2]) ? (int) $uriParts[2] : 0;
+        $this->unit = $this->units[$unitIndex];
+
+        $this->offset = isset($uriParts[3]) ? (int) $uriParts[3] : 0;
+        $offsetString = ($this->offset >= 0) ? '+' . $this->offset : $this->offset;
+
+        if ($this->unit == 'week') {
+            $this->start = new \Datetime('previous monday');
+            $this->start->setTime(0,0);
+        } else if ($this->unit == 'month') {
+            $this->start = new \Datetime(date('Y') . '-' . date('m') . '-01 00:00:00');
+        } else if ($this->unit == 'year') {
+            $this->start = new \Datetime(date('Y') . '-01-01 00:00:00');
         }
+
+        $this->start->modify($offsetString . ' ' . $this->unit);
     }
     // }}}
 
@@ -34,18 +46,17 @@ class TimespanSelector
     // {{{ getEnd
     public function getEnd()
     {
-        if ($this->unit === 0) {
-            $end = clone $this->start;
-            $end->add(new \DateInterval('P7D'));
-            return $end;
-        }
+        $end = clone $this->start;
+        $end->modify('+1 ' . $this->unit);
+
+        return $end;
     }
     // }}}
     // {{{ toString
     public function __toString()
     {
         $uri = $this->uri;
-        $unit = $this->unit;
+        $unit = array_search($this->unit, $this->units);
         $offset = $this->offset;
 
         $list = [
