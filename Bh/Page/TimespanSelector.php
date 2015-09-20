@@ -67,7 +67,10 @@ class TimespanSelector
             '>>' => "/$uri/$unit/" . ($offset + 1),
         ];
 
-        return HTML::menu($list);
+        return HTML::div(['.row', '.title'],
+            HTML::menu($list) .
+            HTML::div(['.length'], $this->getStart()->format('Y-m-d') . ' - ' . $this->getEnd()->format('Y-m-d'))
+        );
     }
     // }}}
 }
