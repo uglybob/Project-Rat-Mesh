@@ -11,8 +11,9 @@ class Records extends PRMBackend
         $content = $timespan; 
         $records = $this->splitRecords($this->controller->getRecords($timespan->getStart(), $timespan->getEnd()));
 
+        $totalLength = 0;
         foreach ($records as $day => $dayRecords) {
-            $totalLength = 0;
+            $totalDayLength = 0;
 
             foreach ($dayRecords as $dayRecord) {
                 $length = $dayRecord->getLength();
@@ -21,17 +22,25 @@ class Records extends PRMBackend
                     $length = abs(time() - $dayRecord->getStart()->getTimestamp());
                 }
 
-                $totalLength += $length;
+                $totalDayLength += $length;
             }
 
-            $lengthString = RecordList::formatLength($totalLength);
+            $totalLength += $totalDayLength;
 
-            $content .= HTML::div(['.title'],
+            $lengthString = RecordList::formatLength($totalDayLength);
+
+            $list .= HTML::div(['.title'],
                 HTML::div(['.date'], $day) .
                 HTML::div(['.length'], $lengthString)
             );
-            $content .= new RecordList($dayRecords, 'record', false, false);
+            $list .= new RecordList($dayRecords, 'record', false, false);
         }
+
+        $content .= HTML::div(['.title'],
+            HTML::div('total') .
+            HTML::div(['.length'], RecordList::formatLength($totalLength))
+        );
+        $content .= $list;
 
         return parent::renderContent(HTML::div($content));
     }
