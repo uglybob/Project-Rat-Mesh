@@ -31,7 +31,11 @@ class RecordList extends ObjectList
         $hours = floor($seconds / 3600);
         $minutes = floor(($seconds / 60) % 60);
 
-        $lengthString = ($hours > 0) ? sprintf('%02dh %02dm', $hours, $minutes) : sprintf('%02dm', $minutes);
+        if ($hours > 0) {
+            $lengthString = $hours . 'h ' . sprintf('%02dm', $minutes);
+        } else {
+            $lengthString = $minutes . 'm';
+        }
 
         return $lengthString;
     }
