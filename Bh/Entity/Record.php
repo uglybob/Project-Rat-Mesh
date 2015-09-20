@@ -5,7 +5,7 @@ namespace Bh\Entity;
 class Record extends Entry
 {
     protected $start;
-    protected $end;
+    protected $length;
     protected $tags;
 
     // {{{ constructor
@@ -13,7 +13,7 @@ class Record extends Entry
     {
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
         $this->start = new \DateTime('now');
-        $this->end = null;
+        $this->length = null;
 
         parent::__construct($user);
     }
@@ -28,7 +28,26 @@ class Record extends Entry
     // {{{ setEnd
     public function setEnd($end)
     {
-        $this->end = $this->formatDateTime($end);
+        $endDateTime = $this->formatDateTime($end);
+
+        if (is_null($end)) {
+            $this->length = null;
+        } else {
+            $this->length = abs($end->getTimestamp() - $this->start->getTimestamp());
+        }
+    }
+    // }}}
+    // {{{ getEnd
+    public function getEnd()
+    {
+        $end = null;
+
+        if (!is_null($this->length)) {
+            $end = clone $this->start;
+            $end->modify('+' . $this->getLength() . ' seconds');
+        }
+
+        return $end;
     }
     // }}}
     // {{{ formatDateTime
@@ -44,13 +63,6 @@ class Record extends Entry
         }
 
         return $output;
-    }
-    // }}}
-    // {{{ getLength
-    public function getLength()
-    {
-        $tempEnd = (is_null($this->getEnd())) ? new \DateTime('now') : $this->getEnd();
-        return $tempEnd->diff($this->getStart());
     }
     // }}}
 

@@ -5,7 +5,7 @@
 
     <entity name="Bh\Entity\Record" table="records">
         <field name="start" type="datetime" />
-        <field name="end" type="datetime" nullable="true" />
+        <field name="length" type="integer" nullable="true" />
         <many-to-many target-entity="Tag" field="tags" />
     </entity>
 </doctrine-mapping>

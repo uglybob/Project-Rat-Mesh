@@ -7,18 +7,33 @@ class RecordList extends ObjectList
     // {{{ getProperties
     public function getProperties($record)
     {
-        $end = $record->getEnd();
-        $endString = ($end) ? ' - ' . $end->format('H:i') : '';
         $length = $record->getLength();
+        $start = $record->getStart();
+        $end = $record->getEnd();
+        $endString = ($end) ? ' - ' . $end->format('H:i') : ' - ';
 
-        $lengthString = ($length->h > 0) ? $length->format('%hh %Im') : $length->format('%Im');
+        if (is_null($length)) {
+            $length = abs(time() - $start->getTimestamp());
+        }
 
         return [
-            'start' => $record->getStart()->format('H:i') . $endString,
+            'start' => $start->format('H:i') . $endString,
             'activity' => $record->getActivity() . '@' . $record->getCategory(),
             'tags' => implode(', ', $record->getTags()),
-            'length' => $lengthString,
+            'length' => self::formatLength($length),
         ];
+    }
+    // }}}
+
+    // {{{ formatLength
+    public static function formatLength($seconds)
+    {
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds / 60) % 60);
+
+        $lengthString = ($hours > 0) ? sprintf('%02dh %02dm', $hours, $minutes) : sprintf('%02dm', $minutes);
+
+        return $lengthString;
     }
     // }}}
 }

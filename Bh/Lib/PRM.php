@@ -89,7 +89,7 @@ class PRM extends Controller
     public function getTagsLengths($start = null, $end = null)
     {
         $conn = Mapper::getEntityManager()->getConnection();
-        $sql = "SELECT tags.name, SUM(TIME_TO_SEC(TIMEDIFF(end, start))) AS length
+        $sql = "SELECT tags.name, SUM(length) AS length
             FROM record_tag
             JOIN tags
             ON tag_id = tags.id
@@ -103,6 +103,7 @@ class PRM extends Controller
             )
             GROUP BY tags.id
             ORDER BY length DESC";
+
         $stmt = $conn->prepare($sql);
         if ($start) { $stmt->bindParam('start', $start->format("Y-m-d H:i:s")); }
         if ($end) { $stmt->bindParam('end', $end->format("Y-m-d H:i:s")); }
@@ -145,7 +146,7 @@ class PRM extends Controller
     protected function getAttributesLengths($attribute, $table, $start, $end)
     {
         $conn = Mapper::getEntityManager()->getConnection();
-        $sql = "SELECT a.name, SUM(TIME_TO_SEC(TIMEDIFF(r.end, r.start))) AS length
+        $sql = "SELECT a.name, SUM(r.length) AS length
             FROM records AS r
             JOIN {$table} AS a
             ON r.{$attribute}_id=a.id
@@ -228,7 +229,7 @@ class PRM extends Controller
             'Record',
             [
                 'user' => $this->getCurrentUser(),
-                'end' => null,
+                'length' => null,
             ],
             false,
             ['start' => 'ASC']

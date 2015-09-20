@@ -12,15 +12,19 @@ class Records extends PRMBackend
         $records = $this->splitRecords($this->controller->getRecords($timespan->getStart(), $timespan->getEnd()));
 
         foreach ($records as $day => $dayRecords) {
-            $startTotal = new \DateTime('00:00');
-            $endTotal = clone $startTotal;
+            $totalLength = 0;
 
             foreach ($dayRecords as $dayRecord) {
-               $endTotal->add($dayRecord->getLength());
+                $length = $dayRecord->getLength();
+
+                if (is_null($length)) {
+                    $length = abs(time() - $dayRecord->getStart()->getTimestamp());
+                }
+
+                $totalLength += $length;
             }
 
-            $lengthTotal = $startTotal->diff($endTotal);
-            $lengthString = ($lengthTotal->h > 0) ? $lengthTotal->format('%hh %Im') : $lengthTotal->format('%Im');
+            $lengthString = RecordList::formatLength($totalLength);
 
             $content .= HTML::div(['.title'],
                 HTML::div(['.date'], $day) .
