@@ -10,14 +10,14 @@ class RecordList extends ObjectList
         $length = $record->getLength();
         $start = $record->getStart();
         $end = $record->getEnd();
-        $endString = ($end) ? ' - ' . $end->format('H:i') : ' - ';
+        $endString = ($end) ? $end->format('H:i') : '';
 
         if (is_null($length)) {
             $length = abs(time() - $start->getTimestamp());
         }
 
         return [
-            'start' => $start->format('H:i') . $endString,
+            'start' => $start->format('H:i') . ' - ' . $endString,
             'activity' => $record->getActivity() . '@' . $record->getCategory(),
             'tags' => implode(', ', $record->getTags()),
             'length' => self::formatLength($length),

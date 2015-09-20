@@ -105,8 +105,8 @@ class PRM extends Controller
             ORDER BY length DESC";
 
         $stmt = $conn->prepare($sql);
-        if ($start) { $stmt->bindParam('start', $start->format("Y-m-d H:i:s")); }
-        if ($end) { $stmt->bindParam('end', $end->format("Y-m-d H:i:s")); }
+        if ($start) { $stmt->bindParam('start', $start->format('Y-m-d H:i:s')); }
+        if ($end) { $stmt->bindParam('end', $end->format('Y-m-d H:i:s')); }
 
         $stmt->execute();
         return $stmt->fetchAll();
@@ -160,8 +160,8 @@ class PRM extends Controller
             ORDER BY length DESC";
 
         $stmt = $conn->prepare($sql);
-        if ($start) { $stmt->bindParam('start', $start->format("Y-m-d H:i:s")); }
-        if ($end) { $stmt->bindParam('end', $end->format("Y-m-d H:i:s")); }
+        if ($start) { $stmt->bindParam('start', $start->format('Y-m-d H:i:s')); }
+        if ($end) { $stmt->bindParam('end', $end->format('Y-m-d H:i:s')); }
 
         $stmt->execute();
         return $stmt->fetchAll();
@@ -206,20 +206,25 @@ class PRM extends Controller
     // {{{ getRecords
     public function getRecords($start = null, $end = null)
     {
-        $query = Mapper::getEntityManager()->createQuery("
-            SELECT r
-            FROM Bh\Entity\Record r
-            WHERE r.user = :user
-            AND r.deleted = false
-            {$this->sqlDateClause($start, $end, 'r')}
-            ORDER BY r.start ASC
-        ");
+        $qb = Mapper::getEntityManager()->createQueryBuilder();
 
-        $query->setParameter('user', $this->getCurrentUser());
-        if ($start) { $query->setParameter('start', $start); }
-        if ($end) { $query->setParameter('end', $end); }
+        $qb->select('r')
+            ->from('Bh\Entity\Record', 'r')
+            ->where('r.user = :user')
+            ->andWhere('r.deleted = false')
+            ->orderBy('r.start', 'ASC')
+            ->setParameter('user', $this->getCurrentUser());
 
-        return $query->getResult();
+        if ($start) {
+            $qb->andWhere('r.start >= :start');
+            $qb->setParameter('start', $start);
+        }
+        if ($end) {
+            $qb->andWhere('r.start <= :end');
+            $qb->setParameter('end', $end);
+        }
+
+        return $qb->getQuery()->getResult();
     }
     // }}}
     // {{{ getCurrentRecords
