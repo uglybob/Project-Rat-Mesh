@@ -65,6 +65,12 @@ class PRM extends Controller
         return $this->getAttributes('Tag');
     }
     // }}}
+    // {{{ getTagsLengths
+    public function getTagsLengths($start = null, $end = null)
+    {
+        return $this->getAttributesLengths('tags', $start, $end);
+    }
+    // }}}
     // {{{ addTag
     public function addTag($name)
     {
@@ -83,27 +89,6 @@ class PRM extends Controller
         }
 
         return $tags;
-    }
-    // }}}
-    // {{{ getTagsLengths
-    public function getTagsLengths($start = null, $end = null)
-    {
-        $qb = Mapper::getEntityManager()->createQueryBuilder();
-
-        $qb->select('tags.name')
-            ->addSelect('SUM(r.length) AS length')
-            ->from('Bh\Entity\Record', 'r')
-            ->leftJoin('r.tags', 'tags')
-            ->where('r.user = :user')
-            ->setParameter('user', $this->getCurrentUser())
-            ->andWhere('r.deleted = false')
-            ->andWhere('tags.deleted = false')
-            ->groupBy('tags.id')
-            ->orderBy('length', 'DESC');
-
-        $this->qbDateClause($qb, $start, $end);
-
-        return $qb->getQuery()->getArrayResult();
     }
     // }}}
 
@@ -144,12 +129,13 @@ class PRM extends Controller
         $qb->select('a.name')
             ->addSelect('SUM(r.length) AS length')
             ->from('Bh\Entity\Record', 'r')
-            ->join('Bh\Entity\\' . ucfirst($attribute), 'a', 'WITH', "r.$attribute = a.id")
+            ->leftJoin("r.$attribute", 'a')
             ->where('r.user = :user')
+            ->where('a.user = :user')
             ->setParameter('user', $this->getCurrentUser())
             ->andWhere('r.deleted = false')
             ->andWhere('a.deleted = false')
-            ->groupBy("r.$attribute")
+            ->groupBy('a.id')
             ->orderBy('length', 'DESC');
 
         $this->qbDateClause($qb, $start, $end);
