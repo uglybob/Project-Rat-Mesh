@@ -24,7 +24,7 @@ class PRM extends Controller
     // {{{ getCategoriesLengths
     public function getCategoriesLengths($start = null, $end = null)
     {
-        return $this->getAttributesLengths('category', 'categories', $start, $end);
+        return $this->getAttributesLengths('category', $start, $end);
     }
     // }}}
     // {{{ addCategory
@@ -49,7 +49,7 @@ class PRM extends Controller
     // {{{ getActivitiesLengths
     public function getActivitiesLengths($start = null, $end = null)
     {
-        return $this->getAttributesLengths('activity', 'activities', $start, $end);
+        return $this->getAttributesLengths('activity', $start, $end);
     }
     // }}}
     // {{{ addActivity
@@ -88,28 +88,22 @@ class PRM extends Controller
     // {{{ getTagsLengths
     public function getTagsLengths($start = null, $end = null)
     {
-        $conn = Mapper::getEntityManager()->getConnection();
-        $sql = "SELECT tags.name, SUM(length) AS length
-            FROM record_tag
-            JOIN tags
-            ON tag_id = tags.id
-            JOIN records
-            ON record_id=records.id
-            WHERE (
-                tags.user_id={$this->getCurrentUser()->getId()}
-                AND records.deleted=false
-                AND tags.deleted=false
-                {$this->sqlDateClause($start, $end, 'records')}
-            )
-            GROUP BY tags.id
-            ORDER BY length DESC";
+        $qb = Mapper::getEntityManager()->createQueryBuilder();
 
-        $stmt = $conn->prepare($sql);
-        if ($start) { $stmt->bindParam('start', $start->format('Y-m-d H:i:s')); }
-        if ($end) { $stmt->bindParam('end', $end->format('Y-m-d H:i:s')); }
+        $qb->select('tags.name')
+            ->addSelect('SUM(r.length) AS length')
+            ->from('Bh\Entity\Record', 'r')
+            ->leftJoin('r.tags', 'tags')
+            ->where('r.user = :user')
+            ->setParameter('user', $this->getCurrentUser())
+            ->andWhere('r.deleted = false')
+            ->andWhere('tags.deleted = false')
+            ->groupBy('tags.id')
+            ->orderBy('length', 'DESC');
 
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $this->qbDateClause($qb, $start, $end);
+
+        return $qb->getQuery()->getArrayResult();
     }
     // }}}
 
@@ -143,28 +137,24 @@ class PRM extends Controller
     }
     // }}}
     // {{{ getAttributesLengths
-    protected function getAttributesLengths($attribute, $table, $start, $end)
+    protected function getAttributesLengths($attribute, $start, $end)
     {
-        $conn = Mapper::getEntityManager()->getConnection();
-        $sql = "SELECT a.name, SUM(r.length) AS length
-            FROM records AS r
-            JOIN {$table} AS a
-            ON r.{$attribute}_id=a.id
-            WHERE (
-                r.user_id = {$this->getCurrentUser()->getId()}
-                AND r.deleted = false
-                AND a.deleted = false
-                {$this->sqlDateClause($start, $end, 'r')}
-            )
-            GROUP BY r.{$attribute}_id
-            ORDER BY length DESC";
+        $qb = Mapper::getEntityManager()->createQueryBuilder();
 
-        $stmt = $conn->prepare($sql);
-        if ($start) { $stmt->bindParam('start', $start->format('Y-m-d H:i:s')); }
-        if ($end) { $stmt->bindParam('end', $end->format('Y-m-d H:i:s')); }
+        $qb->select('a.name')
+            ->addSelect('SUM(r.length) AS length')
+            ->from('Bh\Entity\Record', 'r')
+            ->join('Bh\Entity\\' . ucfirst($attribute), 'a', 'WITH', "r.$attribute = a.id")
+            ->where('r.user = :user')
+            ->setParameter('user', $this->getCurrentUser())
+            ->andWhere('r.deleted = false')
+            ->andWhere('a.deleted = false')
+            ->groupBy("r.$attribute")
+            ->orderBy('length', 'DESC');
 
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $this->qbDateClause($qb, $start, $end);
+
+        return $qb->getQuery()->getArrayResult();
     }
     // }}}
      // {{{ addAttribute
@@ -215,14 +205,7 @@ class PRM extends Controller
             ->orderBy('r.start', 'ASC')
             ->setParameter('user', $this->getCurrentUser());
 
-        if ($start) {
-            $qb->andWhere('r.start >= :start');
-            $qb->setParameter('start', $start);
-        }
-        if ($end) {
-            $qb->andWhere('r.start <= :end');
-            $qb->setParameter('end', $end);
-        }
+        $this->qbDateClause($qb, $start, $end);
 
         return $qb->getQuery()->getResult();
     }
@@ -271,15 +254,17 @@ class PRM extends Controller
     }
     // }}}
 
-    // {{{ sqlDateClause
-    protected function sqlDateClause($start, $end, $tableName)
+    // {{{ qbDateClause
+    protected function qbDateClause($qb, $start, $end)
     {
-        $dateClause = '';
-
-        if ($start) { $dateClause .= " AND $tableName.start >= :start "; }
-        if ($end) { $dateClause .= " AND $tableName.start <= :end "; }
-
-        return $dateClause;
+        if ($start) {
+            $qb->andWhere('r.start >= :start');
+            $qb->setParameter('start', $start);
+        }
+        if ($end) {
+            $qb->andWhere('r.start <= :end');
+            $qb->setParameter('end', $end);
+        }
     }
     // }}}
     // {{{ logAction
