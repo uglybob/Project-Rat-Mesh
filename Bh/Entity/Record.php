@@ -104,7 +104,9 @@ class Record extends Entry
     // {{{ addTag
     public function addTag($tag)
     {
-        $this->tags[] = $tag;
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
     }
     // }}}
     // {{{ removeTag
