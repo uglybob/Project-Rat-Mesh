@@ -44,7 +44,7 @@ class EditRecord extends EditForm
             $values['Start-Date'] = $this->toDate($start);
             $values['Start-Time'] = $this->toTime($start);
         }
-        if ($end = $this->object->getEnd()) {
+        if (!$this->object->isRunning() && $end = $this->object->getEnd()) {
             $values['End-Date'] = $this->toDate($end);
             $values['End-Time'] = $this->toTime($end);
         }

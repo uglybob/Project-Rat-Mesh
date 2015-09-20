@@ -19,6 +19,13 @@ class Record extends Entry
     }
     // }}}
 
+    // {{{ isRunning
+    public function isRunning()
+    {
+        return is_null($this->length);
+    }
+    // }}}
+
     // {{{ setStart
     public function setStart($start)
     {
@@ -40,14 +47,26 @@ class Record extends Entry
     // {{{ getEnd
     public function getEnd()
     {
-        $end = null;
-
-        if (!is_null($this->length)) {
+        if ($this->isRunning()) {
+            $end = new \Datetime('now');
+        } else {
             $end = clone $this->start;
             $end->modify('+' . $this->getLength() . ' seconds');
         }
 
         return $end;
+    }
+    // }}}
+    // {{{ getLength
+    public function getLength()
+    {
+        if ($this->isRunning()) {
+            $length = abs(time() - $this->start->getTimestamp());
+        } else {
+            $length = $this->length;
+        }
+
+        return $length;
     }
     // }}}
     // {{{ formatDateTime
