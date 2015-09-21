@@ -25,7 +25,7 @@ class TimespanSelector
         $offsetString = ($this->offset >= 0) ? '+' . $this->offset : $this->offset;
 
         if ($this->unit == 'week') {
-            $this->start = new \Datetime('previous monday');
+            $this->start = new \Datetime('this week');
             $this->start->setTime(0,0);
         } else if ($this->unit == 'month') {
             $this->start = new \Datetime(date('Y') . '-' . date('m') . '-01 00:00:00');
