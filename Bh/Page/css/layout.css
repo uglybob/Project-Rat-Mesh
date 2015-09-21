@@ -50,9 +50,23 @@ body {
 }
 
 .title {
-    padding-bottom : 3px;
+    padding-bottom : 6px;
 }
 
 .title > div, .row > div, .menuBar > div > div{
     display : inline;
+}
+
+.bar {
+    border-radius: 2px;
+    position: absolute;
+    background-color : #ddd;
+    z-index: -1;
+    height: 21px;
+}
+
+.totalRow > .row {
+    height: 24px;
+    padding-left : 3px;
+    padding-right : 3px;
 }

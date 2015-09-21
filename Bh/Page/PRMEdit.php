@@ -30,6 +30,6 @@ class PRMEdit extends PRMBackend
     // {{{ renderContent
     public function renderContent()
     {
-        return parent::renderContent($this->editForm->__toString());
+        return parent::renderContent($this->editForm);
     }
 }

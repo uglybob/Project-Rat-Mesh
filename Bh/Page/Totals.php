@@ -33,21 +33,30 @@ class Totals extends PRMBackend
     protected function attributeList($type, $attributes)
     {
         $list = '';
+        $maxLength = (isset($attributes[0]['length'])) ? $attributes[0]['length'] : null;
 
         foreach ($attributes as $attribute) {
             $length = (int) $attribute['length'];
             $hours = $length / 3600;
             $lengthString = round($hours, 1);
 
-            $list .= HTML::div(['.row'],
-                HTML::div(['.attribute'], $attribute['name']) .
-                HTML::div(['.length'], $lengthString)
+            $percentage = round(650 * $length / $maxLength);
+
+            $list .= HTML::div(['.totalRow'],
+                HTML::div(['.bar', 'style' => "width : {$percentage}px"])
+                . HTML::div(['.row'],
+                    HTML::div(['.attribute'], $attribute['name'])
+                    . HTML::div(['.length'], $lengthString)
+                )
             );
         }
 
         return HTML::div(
             ['.attributeList', ".$type"],
-            HTML::div(['.title'], ucfirst($type)) . $list
+            HTML::div(
+                ['.title'], ucfirst($type)
+            )
+            . $list
         );
     }
     // }}}
