@@ -228,12 +228,6 @@ class PRM extends Controller
                     Mapper::save($newRecord);
                 }
 
-                $this->logAction(
-                    'edit',
-                    'Record',
-                    $newRecord->getId() . '|' . implode('|',  $newRecord->getRow())
-                );
-
                 Mapper::commit();
             }
        }
