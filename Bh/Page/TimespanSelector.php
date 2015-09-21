@@ -67,7 +67,7 @@ class TimespanSelector
             '>>' => "/$uri/$unit/" . ($offset + 1),
         ];
 
-        return HTML::div(['.title'],
+        return HTML::div(['.row', '.timespan'],
             HTML::menu($list) .
             HTML::div(['.length'], $this->getStart()->format('Y-m-d') . ' - ' . $this->getEnd()->format('Y-m-d'))
         );

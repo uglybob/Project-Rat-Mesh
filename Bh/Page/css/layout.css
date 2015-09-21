@@ -22,14 +22,14 @@ body {
 
 .menuBar {
     padding-top : 10px;
-    padding-bottom : 60px;
+    padding-bottom : 50px;
 }
 
-.menuLeft a {
+.menuLeft a, .timespan a {
     margin-right : 10px;
 }
 
-.menuRight a {
+.menuRight a{
     margin-left : 10px;
 }
 
@@ -38,7 +38,11 @@ body {
 }
 
 .objectList, .attributeList {
-    padding-bottom : 25px;
+    margin-bottom : 25px;
+}
+
+.timespan, .total {
+    margin-bottom : 10px;
 }
 
 .objectRow, .row {

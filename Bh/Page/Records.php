@@ -36,7 +36,7 @@ class Records extends PRMBackend
             $list .= new RecordList($dayRecords, 'record', false, false);
         }
 
-        $content .= HTML::div(['.title'],
+        $content .= HTML::div(['.title', '.total'],
             HTML::div('total') .
             HTML::div(['.length'], RecordList::formatLength($totalLength))
         );
