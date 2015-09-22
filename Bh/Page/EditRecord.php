@@ -9,26 +9,36 @@ class EditRecord extends EditForm
     {
         $this->form->addText(
             'Activity',
-            ['list' => $this->controller->getActivities()]
+            [
+                'list' => $this->controller->getActivities(),
+                'autocomplete' => false,
+            ]
+
         );
         $this->form->addText(
             'Category',
             [
                 'list' => $this->controller->getCategories(),
                 'required' => true,
+                'autocomplete' => false,
             ]
         )->setRequired();
 
-        $this->form->addText('Tags');
+        $this->form->addText('Tags', ['autocomplete' => false]);
 
-        $this->form->addDate('Start-Date');
-        $this->form->addTime('Start-Time');
+        $this->form->addDate('Start-Date', ['autocomplete' => false]);
+        $this->form->addTime('Start-Time', ['autocomplete' => false]);
 
         $this->form->addDate(
             'End-Date',
-            ['list' => [(new \DateTime('now'))->format('d.m.Y')]]
+            [
+                'list' => [
+                    (new \DateTime('now'))->format('d.m.Y'
+                )],
+                'autocomplete' => false,
+            ]
         );
-        $this->form->addTime('End-Time');
+        $this->form->addTime('End-Time', ['autocomplete' => false]);
     }
     // }}}
     // {{{ populate
