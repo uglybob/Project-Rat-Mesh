@@ -33,8 +33,9 @@ class EditRecord extends EditForm
             'End-Date',
             [
                 'list' => [
-                    (new \DateTime('now'))->format('d.m.Y'
-                )],
+                    $this->toDate(new \DateTime('now')),
+                    $this->toDate((new \DateTime('now'))->modify('+1 day')),
+                ],
                 'autocomplete' => false,
             ]
         );
@@ -105,7 +106,7 @@ class EditRecord extends EditForm
     // {{{ toDate
     protected function toDate($dateTime)
     {
-        return $this->format($dateTime, 'd.m.Y');
+        return $this->format($dateTime, 'Y-m-d');
     }
     // }}}
     // {{{ toTime
@@ -126,7 +127,7 @@ class EditRecord extends EditForm
             !empty($time)
             && !empty($date)
         ) {
-            $result = \DateTime::createFromFormat('H:i d.m.Y', $time . ' ' . $date);
+            $result = \DateTime::createFromFormat('Y-m-d H:i', $date . ' ' . $time);
         }
 
         return $result;
