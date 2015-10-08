@@ -6,16 +6,13 @@ use Bh\Lib\Controller;
 
 class PRMUser extends PRMPage
 {
-    // {{{ constructor
-    public function __construct(Controller $controller, array $path)
+    // {{{ hookConstructor
+    protected function hookConstructor()
     {
-        parent::__construct($controller, $path);
+        parent::hookConstructor();
 
         $this->stylesheets[] = '/vendor/depage/htmlform/lib/css/depage-forms.css';
-
-        $id = isset($path[1]) ? $path[1] : null;
-
-        $this->registrationForm = new RegistrationForm($controller, $id);
+        $this->registrationForm = new RegistrationForm($this->controller, $this->getPath(1));
     }
     // }}}
 

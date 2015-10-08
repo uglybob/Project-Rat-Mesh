@@ -6,30 +6,26 @@ use Bh\Lib\Controller;
 
 class PRMEdit extends PRMBackend
 {
-    // {{{ constructor
-    public function __construct(Controller $controller, array $path)
+    // {{{ hookConstructor
+    protected function hookConstructor()
     {
-        parent::__construct($controller, $path);
+        parent::hookConstructor();
 
         $this->stylesheets[] = '/vendor/depage/htmlform/lib/css/depage-forms.css';
 
-        $this->class = ucfirst($path[1]);
-        $formType = 'Bh\Page\Edit' . $this->class;
+        $class = ucfirst($this->getPath(1));
+        $formType = 'Bh\Page\Edit' . $class;
 
-        $id = isset($path[2]) ? $path[2] : null;
-        $this->editForm = new $formType($controller, $this->class, $id);
+        $this->editForm = new $formType($this->controller, $class, $this->getPath(2));
+
+        $this->title = 'Edit ' . $class;
     }
     // }}}
 
-    // {{{ hookTitle
-    public function hookTitle()
-    {
-        return 'Edit ' . $this->class;
-    }
-    // }}}
     // {{{ renderContent
     public function renderContent()
     {
         return parent::renderContent($this->editForm);
     }
+    // }}}
 }
