@@ -29,7 +29,7 @@ class Records extends PRMBackend
 
             $lengthString = RecordList::formatLength($totalDayLength);
 
-            $list .= HTML::div(['.title'],
+            $list = HTML::div(['.title'],
                 HTML::div(['.date'], $day) .
                 HTML::div(['.length'], $lengthString)
             );
@@ -40,7 +40,10 @@ class Records extends PRMBackend
             HTML::div('total') .
             HTML::div(['.length'], RecordList::formatLength($totalLength))
         );
-        $content .= $list;
+
+        if (!empty($records)) {
+            $content .= $list;
+        }
 
         return parent::renderContent(HTML::div($content));
     }
