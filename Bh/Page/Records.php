@@ -9,6 +9,7 @@ class Records extends PRMBackend
     {
         $timespan = new TimespanSelector();
         $content = $timespan; 
+        $list = '';
         $records = $this->splitRecords($this->controller->getRecords($timespan->getStart(), $timespan->getEnd()));
 
         $totalLength = 0;
@@ -29,7 +30,7 @@ class Records extends PRMBackend
 
             $lengthString = RecordList::formatLength($totalDayLength);
 
-            $list = HTML::div(['.title'],
+            $list .= HTML::div(['.title'],
                 HTML::div(['.date'], $day) .
                 HTML::div(['.length'], $lengthString)
             );
@@ -41,9 +42,7 @@ class Records extends PRMBackend
             HTML::div(['.length'], RecordList::formatLength($totalLength))
         );
 
-        if (!empty($records)) {
-            $content .= $list;
-        }
+        $content .= $list;
 
         return parent::renderContent(HTML::div($content));
     }
