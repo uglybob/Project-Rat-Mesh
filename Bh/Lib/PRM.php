@@ -92,7 +92,7 @@ class PRM extends Controller
     }
     // }}}
 
-     // {{{ getAttribute
+    // {{{ getAttribute
     protected function getAttribute($type, $name)
     {
         $name = is_string($name) ? $name : $name->__toString();
@@ -156,7 +156,7 @@ class PRM extends Controller
 
             if (!$attribute) {
                 $class = 'Bh\Entity\\' . $type;
-                $attribute= new $class($this->getCurrentUser(), $name);
+                $attribute = new $class($this->getCurrentUser(), $name);
                 Mapper::save($attribute);
             }
         }
