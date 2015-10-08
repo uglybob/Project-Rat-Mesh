@@ -15,16 +15,7 @@ class PRMUser extends PRMPage
 
         $id = isset($path[1]) ? $path[1] : null;
 
-        $settings = \Bh\Lib\Setup::getSettings();
-
-        if (
-            $settings['EnableRegistration']
-            || $this->controller->getCurrentUser()
-        ) {
-            $this->registrationForm = new RegistrationForm($controller, 'User', $id);
-        } else {
-            $this->registrationForm = 'Registration disabled';
-        }
+        $this->registrationForm = new RegistrationForm($controller, $id);
     }
     // }}}
 
