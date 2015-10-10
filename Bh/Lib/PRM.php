@@ -215,22 +215,23 @@ class PRM extends Controller
     // {{{ editRecord
     public function editRecord(Record $newRecord)
     {
-        if ($newRecord->getUser() === $this->getCurrentUser()) {
-            if (
+        if (
+            $newRecord->getUser() === $this->getCurrentUser()
+            && (
                 ($newRecord->getId() && $this->getRecord($newRecord->getId()))
                 || is_null($newRecord->getId())
-            ) {
-                $newRecord->setActivity($this->addActivity($newRecord->getActivity()));
-                $newRecord->setCategory($this->addCategory($newRecord->getCategory()));
-                $newRecord->setTags($this->addTags($newRecord->getTags()));
+            )
+        ) {
+            $newRecord->setActivity($this->addActivity($newRecord->getActivity()));
+            $newRecord->setCategory($this->addCategory($newRecord->getCategory()));
+            $newRecord->setTags($this->addTags($newRecord->getTags()));
 
-                if (is_null($newRecord->getId())) {
-                    Mapper::save($newRecord);
-                }
-
-                Mapper::commit();
+            if (is_null($newRecord->getId())) {
+                Mapper::save($newRecord);
             }
-       }
+
+            Mapper::commit();
+        }
     }
     // }}}
 
