@@ -1,12 +1,6 @@
 {
     "name": "prm",
     "minimum-stability": "dev",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/uglybob/depage-forms"
-        }
-    ],
     "require" : {
         "uglybob/bh.net": "master"
     },
