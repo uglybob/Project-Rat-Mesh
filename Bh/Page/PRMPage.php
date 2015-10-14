@@ -4,20 +4,16 @@ namespace Bh\Page;
 
 class PRMPage extends Page
 {
-    // {{{ hookConstructor
-    protected function hookConstructor()
+    // {{{ hookTitle
+    protected function hookTitle()
     {
-        $this->stylesheets[] = '/Bh/Page/css/fonts.css';
-        $this->stylesheets[] = '/Bh/Page/css/layout.css';
-        $this->stylesheets[] = '/Bh/Page/css/colors.css';
-
-        $this->title = 'Project Rat Mesh';
+        return 'Project Rat Mesh';
     }
     // }}}
-    // {{{ renderContent
-    public function renderContent($content)
+    // {{{ hookTemplate
+    protected function hookTemplate()
     {
-        return (new PRMMenu($this->controller->getCurrentUser())) . $content;
+        $this->template = new PRMTemplate($this->controller);
     }
     // }}}
 }

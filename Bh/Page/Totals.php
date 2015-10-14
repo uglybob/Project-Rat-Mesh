@@ -19,7 +19,7 @@ class Totals extends PRMBackend
             $content .= $this->attributeList('tags', $this->controller->getTagsLengths($start, $end));
         }
 
-        return parent::renderContent($content);
+        return $content;
     }
     // }}}
     // {{{ hookTitle

@@ -2,24 +2,18 @@
 
 namespace Bh\Page;
 
-class PRMLogin extends PRMPage
+class PRMLogin extends Login
 {
-    // {{{ hookConstructor
-    protected function hookConstructor()
+    // {{{ hookTitle
+    protected function hookTitle()
     {
-        parent::hookConstructor();
-
-        $this->stylesheets[] = '/vendor/depage/htmlform/lib/css/depage-forms.css';
-
-        $this->title = 'Login';
-
-        $this->form = new LoginForm($this->controller);
+        return "Login";
     }
     // }}}
-    // {{{ renderContent
-    public function renderContent()
+    // {{{ hookTemplate
+    protected function hookTemplate()
     {
-        return parent::renderContent(new LoginForm($this->controller));
+        $this->template = new PRMTemplate($this->controller);
     }
     // }}}
 }

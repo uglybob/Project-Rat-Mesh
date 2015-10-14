@@ -2,24 +2,18 @@
 
 namespace Bh\Page;
 
-use Bh\Lib\Controller;
-
-class PRMUser extends PRMPage
+class PRMUser extends User
 {
-    // {{{ hookConstructor
-    protected function hookConstructor()
+    // {{{ hookTitle
+    protected function hookTitle()
     {
-        parent::hookConstructor();
-
-        $this->stylesheets[] = '/vendor/depage/htmlform/lib/css/depage-forms.css';
-        $this->registrationForm = new RegistrationForm($this->controller, $this->getPath(1));
+        return 'User';
     }
     // }}}
-
-    // {{{ renderContent
-    public function renderContent()
+    // {{{ hookTemplate
+    protected function hookTemplate()
     {
-        return parent::renderContent($this->registrationForm);
+        $this->template = new PRMTemplate($this->controller);
     }
     // }}}
 }

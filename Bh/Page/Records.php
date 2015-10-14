@@ -44,7 +44,7 @@ class Records extends PRMBackend
 
         $content .= $list;
 
-        return parent::renderContent(HTML::div($content));
+        return HTML::div($content);
     }
     // }}}
     // {{{ hookTitle

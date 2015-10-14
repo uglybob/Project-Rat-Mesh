@@ -13,7 +13,7 @@ class Home extends PRMPage
             $content .= new RecordList($this->controller->getCurrentRecords(), 'record', true, false);
         }
 
-        return parent::renderContent($content);
+        return $content;
     }
     // }}}
 }
