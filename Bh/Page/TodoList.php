@@ -9,8 +9,8 @@ class TodoList extends ObjectList
     {
         return [
             'text' => $todo->getText(),
-            'activity' => $record->getActivity() . '@' . $record->getCategory(),
-            'tags' => implode(', ', $record->getTags()),
+            'activity' => $todo->getActivity() . '@' . $todo->getCategory(),
+            'tags' => implode(', ', $todo->getTags()),
         ];
     }
     // }}}

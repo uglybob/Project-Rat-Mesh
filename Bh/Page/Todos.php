@@ -7,7 +7,7 @@ class Todos extends PRMBackend
     // {{{ renderContent
     public function renderContent()
     {
-        $list = new TodoList($this->controller->getTodos(), 'todo', false, false);
+        $list = new TodoList($this->controller->getTodos(), 'todo', true, false);
 
         return HTML::div($list);
     }

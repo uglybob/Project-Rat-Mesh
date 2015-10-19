@@ -3,6 +3,7 @@
 namespace Bh\Lib;
 
 use Bh\Entity\Record;
+use Bh\Entity\Todo;
 use Bh\Entity\Category;
 use Bh\Entity\Activity;
 use Bh\Entity\Tag;
@@ -235,6 +236,20 @@ class PRM extends Controller
     }
     // }}}
 
+    // {{{ getTodo
+    public function getTodo($id)
+    {
+        $record = Mapper::findOneBy(
+            'Todo',
+            [
+                'id' => $id,
+                'user' => $this->getCurrentUser(),
+            ]
+        );
+
+        return $record;
+    }
+    // }}}
     // {{{ getTodos
     public function getTodos()
     {
@@ -246,6 +261,29 @@ class PRM extends Controller
         );
 
         return $todos;
+    }
+    // }}}
+    // {{{ editTodo
+    public function editTodo(Todo $newTodo)
+    {
+        if (
+            $newTodo->getUser() === $this->getCurrentUser()
+            && (
+                ($newTodo->getId() && $this->getTodo($newTodo->getId()))
+                || is_null($newTodo->getId())
+            )
+        ) {
+            $newTodo->setActivity($this->addActivity($newTodo->getActivity()));
+            $newTodo->setCategory($this->addCategory($newTodo->getCategory()));
+            $newTodo->setTags($this->addTags($newTodo->getTags()));
+            $newTodo->setText($newTodo->getText());
+
+            if (is_null($newTodo->getId())) {
+                Mapper::save($newTodo);
+            }
+
+            Mapper::commit();
+        }
     }
     // }}}
 
