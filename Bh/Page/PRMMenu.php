@@ -14,6 +14,7 @@ class PRMMenu
                 'home' => '/',
                 'records' => '/records',
                 'totals' => '/totals',
+                'todos' => '/todos',
             ];
             $linksRight = [
                 'logout' => '/login',

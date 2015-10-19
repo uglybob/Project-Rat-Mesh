@@ -235,6 +235,20 @@ class PRM extends Controller
     }
     // }}}
 
+    // {{{ getTodos
+    public function getTodos()
+    {
+        $todos = Mapper::findBy(
+            'Todo',
+            [
+                'user' => $this->getCurrentUser(),
+            ]
+        );
+
+        return $todos;
+    }
+    // }}}
+
     // {{{ qbDateClause
     protected function qbDateClause($qb, $start, $end)
     {
