@@ -2,29 +2,12 @@
 
 namespace Bh\Page;
 
-class EditRecord extends EditForm
+class EditRecord extends EditEntry
 {
     // {{{ create
     protected function create()
     {
-        $this->form->addText(
-            'Activity',
-            [
-                'list' => $this->controller->getActivities(),
-                'autocomplete' => false,
-            ]
-
-        );
-        $this->form->addText(
-            'Category',
-            [
-                'list' => $this->controller->getCategories(),
-                'required' => true,
-                'autocomplete' => false,
-            ]
-        )->setRequired();
-
-        $this->form->addText('Tags', ['autocomplete' => false]);
+        parent::create();
 
         $this->form->addDate('Start-Date', ['autocomplete' => false]);
         $this->form->addTime('Start-Time', ['autocomplete' => false]);
@@ -45,11 +28,9 @@ class EditRecord extends EditForm
     // {{{ populate
     protected function populate()
     {
-        $values = [
-            'Activity' => $this->object->getActivity(),
-            'Category' => $this->object->getCategory(),
-            'Tags' => implode(', ', $this->object->getTags()),
-        ];
+        parent::populate();
+
+        $values = [];
 
         if ($start = $this->object->getStart()) {
             $values['Start-Date'] = $this->toDate($start);
@@ -66,13 +47,12 @@ class EditRecord extends EditForm
     // {{{ save
     protected function save()
     {
+        parent::save();
+
         $values = $this->form->getValues();
 
         $this->object->setStart($this->toDateTime($values['Start-Time'], $values['Start-Date']));
         $this->object->setEnd($this->toDateTime($values['End-Time'], $values['End-Date']));
-        $this->object->setActivity($values['Activity']);
-        $this->object->setCategory($values['Category']);
-        $this->object->setTags(explode(',', $values['Tags']));
 
         $this->controller->editRecord($this->object);
     }
