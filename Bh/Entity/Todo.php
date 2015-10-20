@@ -5,7 +5,6 @@ namespace Bh\Entity;
 class Todo extends Entry
 {
     // {{{ variables
-    protected $text;
     protected $done = false;
     protected $children;
     protected $parent;

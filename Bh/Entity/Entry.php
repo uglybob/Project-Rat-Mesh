@@ -4,9 +4,12 @@ namespace Bh\Entity;
 
 class Entry extends PrivateEntity
 {
+    // {{{ variables
+    protected $text;
     protected $tags;
     protected $category;
     protected $activity;
+    // }}}
 
     // {{{ constructor
     public function __construct($user)

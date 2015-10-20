@@ -4,6 +4,7 @@
     http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
 
     <mapped-superclass name="Bh\Entity\Entry" table="entries">
+        <field name="text" type="string" />
         <many-to-one target-entity="Category" field="category" inversed-by="entry" />
         <many-to-one target-entity="Activity" field="activity" inversed-by="entry" />
     </mapped-superclass>

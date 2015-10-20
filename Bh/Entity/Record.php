@@ -4,8 +4,10 @@ namespace Bh\Entity;
 
 class Record extends Entry
 {
+    // {{{ variables
     protected $start;
     protected $length;
+    // }}}
 
     // {{{ constructor
     public function __construct($user)
@@ -23,7 +25,6 @@ class Record extends Entry
         return is_null($this->length);
     }
     // }}}
-
     // {{{ setStart
     public function setStart($start)
     {
@@ -67,6 +68,7 @@ class Record extends Entry
         return $length;
     }
     // }}}
+
     // {{{ formatDateTime
     public function formatDateTime($input)
     {
