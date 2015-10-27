@@ -16,10 +16,16 @@ class RecordList extends ObjectList
             $length = abs(time() - $start->getTimestamp());
         }
 
+        $tags = '';
+
+        foreach ($record->getTags() as $tag) {
+            $tags .= HTML::span(['.tag'], $tag);
+        }
+
         return [
-            'start' => $start->format('H:i') . ' - ' . $endString,
-            'activity' => $record->getActivity() . ' - ' . $record->getCategory(),
-            'tags' => implode(', ', $record->getTags()),
+            'time' => $start->format('H:i') . ' - ' . $endString,
+            'name' => HTML::span(['.activity'], $record->getActivity()) . ' - ' . HTML::span(['.category'], $record->getCategory()),
+            'tags' => $tags,
             'length' => self::formatLength($length),
         ];
     }

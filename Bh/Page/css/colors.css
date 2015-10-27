@@ -9,3 +9,7 @@ body, a {
 .objectRow:hover, .row:hover {
     background-color: #eee
 }
+
+.category {
+    color : #888
+}

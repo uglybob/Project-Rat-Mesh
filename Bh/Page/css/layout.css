@@ -12,10 +12,6 @@ body {
     width : 95px;
 }
 
-.activity {
-    width : 220px;
-}
-
 .length, .menuRight {
     float : right;
 }
@@ -25,7 +21,7 @@ body {
     padding-bottom : 50px;
 }
 
-.menuLeft a, .timespan a {
+.menuLeft a, .timespan a, .properties > a > :not(:last-child) {
     margin-right : 10px;
 }
 
@@ -33,7 +29,7 @@ body {
     margin-left : 10px;
 }
 
-.menuLeft, .activity, .start{
+.menuLeft {
     float : left;
 }
 
@@ -69,4 +65,23 @@ body {
     height: 24px;
     padding-left : 3px;
     padding-right : 3px;
+}
+
+.tag {
+    background-image : url('/Bh/Page/images/middle.png');
+    margin-right : 4px;
+}
+
+.tag::before {
+    content : '';
+    padding-right : 7px;
+    margin-right : 4px;
+    background : url('/Bh/Page/images/start.png');
+}
+
+.tag::after {
+    content : '';
+    padding-left : 2px;
+    margin-left : 2px;
+    background : url('/Bh/Page/images/end.png');
 }
