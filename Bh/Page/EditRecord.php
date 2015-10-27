@@ -12,17 +12,22 @@ class EditRecord extends EditEntry
         $this->form->addDate('Start-Date', ['autocomplete' => false]);
         $this->form->addTime('Start-Time', ['autocomplete' => false]);
 
+        $now = new \DateTime('now');
+
         $this->form->addDate(
             'End-Date',
             [
-                'list' => [
-                    $this->toDate(new \DateTime('now')),
-                    $this->toDate((new \DateTime('now'))->modify('+1 day')),
-                ],
+                'list' => [$this->toDate($now)],
                 'autocomplete' => false,
             ]
         );
-        $this->form->addTime('End-Time', ['autocomplete' => false]);
+        $this->form->addTime(
+            'End-Time',
+            [
+                'list' => [$this->toTime($now)],
+                'autocomplete' => false,
+            ]
+        );
     }
     // }}}
     // {{{ populate
