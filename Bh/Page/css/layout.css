@@ -5,11 +5,7 @@ body {
 
 #wrapper {
     margin : 0px auto 0px auto;
-    width : 650px;
-}
-
-.start {
-    width : 95px;
+    width : 600px;
 }
 
 .length, .menuRight {
