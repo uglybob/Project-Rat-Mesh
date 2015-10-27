@@ -24,7 +24,14 @@ abstract class EditEntry extends EditForm
             ]
         )->setRequired();
 
-        $this->form->addText('Tags', ['autocomplete' => false]);
+        $this->form->addText(
+            'Tags',
+            [
+                'list' => $this->controller->getTags(),
+                'autocomplete' => false
+            ]
+        );
+
         $this->form->addText('Text', ['autocomplete' => false]);
     }
     // }}}
