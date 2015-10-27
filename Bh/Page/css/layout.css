@@ -63,30 +63,28 @@ body {
     padding-right : 3px;
 }
 
-.tags {
-    padding-left : 7px;
-}
-
 .tag {
     background-image : url('/Bh/Page/images/middle.png');
-    margin-right : 14px;
+    margin-right : 8px;
+    margin-left : 6px;
     background-repeat: repeat-x;
 }
 
-.tag::before {
+.tag::before, .tag::after {
     content : '';
+    background-repeat: no-repeat;
+}
+
+.tag::before {
     width : 7px;
     height : 16px;
     margin : 3px 0px 0px -6px;
     position : absolute;
     background-image : url('/Bh/Page/images/start.png');
-    background-repeat: no-repeat;
 }
 
 .tag::after {
-    content : '';
     padding-left : 2px;
     margin-left : 2px;
     background-image : url('/Bh/Page/images/end.png');
-    background-repeat: no-repeat;
 }

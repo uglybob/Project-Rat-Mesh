@@ -24,7 +24,7 @@ class RecordList extends ObjectList
 
         return [
             'time' => $start->format('H:i') . ' - ' . $endString,
-            'name' => HTML::span(['.activity'], $record->getActivity()) . ' - ' . HTML::span(['.category'], $record->getCategory()),
+            'name' => HTML::span(['.activity'], $record->getActivity()) . HTML::span(['.category'], ' - ' . $record->getCategory()),
             'tags' => $tags,
             'length' => self::formatLength($length),
         ];
