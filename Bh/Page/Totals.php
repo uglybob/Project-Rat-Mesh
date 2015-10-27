@@ -40,7 +40,7 @@ class Totals extends PRMBackend
             $hours = $length / 3600;
             $lengthString = round($hours, 1);
 
-            $percentage = round(650 * $length / $maxLength);
+            $percentage = round(600 * $length / $maxLength);
 
             $list .= HTML::div(['.totalRow'],
                 HTML::div(['.bar', 'style' => "width : {$percentage}px"])
