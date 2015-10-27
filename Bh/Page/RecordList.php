@@ -18,7 +18,7 @@ class RecordList extends ObjectList
 
         return [
             'start' => $start->format('H:i') . ' - ' . $endString,
-            'activity' => $record->getActivity() . '@' . $record->getCategory(),
+            'activity' => $record->getActivity() . ' - ' . $record->getCategory(),
             'tags' => implode(', ', $record->getTags()),
             'length' => self::formatLength($length),
         ];
