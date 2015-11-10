@@ -276,7 +276,6 @@ class PRM extends Controller
             $newTodo->setActivity($this->addActivity($newTodo->getActivity()));
             $newTodo->setCategory($this->addCategory($newTodo->getCategory()));
             $newTodo->setTags($this->addTags($newTodo->getTags()));
-            $newTodo->setText($newTodo->getText());
 
             if (is_null($newTodo->getId())) {
                 Mapper::save($newTodo);

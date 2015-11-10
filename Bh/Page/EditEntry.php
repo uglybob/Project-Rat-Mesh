@@ -28,7 +28,7 @@ abstract class EditEntry extends EditForm
             'Tags',
             [
                 'list' => $this->controller->getTags(),
-                'autocomplete' => false
+                'autocomplete' => false,
             ]
         );
 
