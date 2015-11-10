@@ -216,23 +216,7 @@ class PRM extends Controller
     // {{{ editRecord
     public function editRecord(Record $newRecord)
     {
-        if (
-            $newRecord->getUser() === $this->getCurrentUser()
-            && (
-                ($newRecord->getId() && $this->getRecord($newRecord->getId()))
-                || is_null($newRecord->getId())
-            )
-        ) {
-            $newRecord->setActivity($this->addActivity($newRecord->getActivity()));
-            $newRecord->setCategory($this->addCategory($newRecord->getCategory()));
-            $newRecord->setTags($this->addTags($newRecord->getTags()));
-
-            if (is_null($newRecord->getId())) {
-                Mapper::save($newRecord);
-            }
-
-            Mapper::commit();
-        }
+        $this->editEntry('Record', $newRecord);
     }
     // }}}
 
@@ -266,19 +250,26 @@ class PRM extends Controller
     // {{{ editTodo
     public function editTodo(Todo $newTodo)
     {
+        $this->editEntry('Todo', $newTodo);
+    }
+    // }}}
+
+    // {{{ editEntry
+    protected function editEntry($class, $newEntry)
+    {
         if (
-            $newTodo->getUser() === $this->getCurrentUser()
+            $newEntry->getUser() === $this->getCurrentUser()
             && (
-                ($newTodo->getId() && $this->getTodo($newTodo->getId()))
-                || is_null($newTodo->getId())
+                ($newEntry->getId() && $this->{"get$class"}($newEntry->getId()))
+                || is_null($newEntry->getId())
             )
         ) {
-            $newTodo->setActivity($this->addActivity($newTodo->getActivity()));
-            $newTodo->setCategory($this->addCategory($newTodo->getCategory()));
-            $newTodo->setTags($this->addTags($newTodo->getTags()));
+            $newEntry->setActivity($this->addActivity($newEntry->getActivity()));
+            $newEntry->setCategory($this->addCategory($newEntry->getCategory()));
+            $newEntry->setTags($this->addTags($newEntry->getTags()));
 
-            if (is_null($newTodo->getId())) {
-                Mapper::save($newTodo);
+            if (is_null($newEntry->getId())) {
+                Mapper::save($newEntry);
             }
 
             Mapper::commit();
