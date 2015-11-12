@@ -19,7 +19,7 @@ class PRM extends Controller
     // {{{ getCategories
     public function getCategories()
     {
-        return $this->getAttributes('Category');
+        return $this->getPrivateEntities('Category');
     }
     // }}}
     // {{{ getCategoriesLengths
@@ -44,7 +44,7 @@ class PRM extends Controller
      // {{{ getActivities
     public function getActivities()
     {
-        return $this->getAttributes('Activity');
+        return $this->getPrivateEntities('Activity');
     }
     // }}}
     // {{{ getActivitiesLengths
@@ -63,7 +63,7 @@ class PRM extends Controller
      // {{{ getTags
     public function getTags()
     {
-        return $this->getAttributes('Tag');
+        return $this->getPrivateEntities('Tag');
     }
     // }}}
     // {{{ getTagsLengths
@@ -93,6 +93,71 @@ class PRM extends Controller
     }
     // }}}
 
+    // {{{ getRecord
+    public function getRecord($id)
+    {
+        return $this->getPrivateEntity('Record', $id);
+    }
+    // }}}
+    // {{{ getRecords
+    public function getRecords($start = null, $end = null)
+    {
+        $qb = Mapper::getEntityManager()->createQueryBuilder();
+
+        $qb->select('r')
+            ->from('Bh\Entity\Record', 'r')
+            ->where('r.user = :user')
+            ->andWhere('r.deleted = false')
+            ->orderBy('r.start', 'ASC')
+            ->setParameter('user', $this->getCurrentUser());
+
+        $this->qbDateClause($qb, $start, $end);
+
+        return $qb->getQuery()->getResult();
+    }
+    // }}}
+    // {{{ getCurrentRecords
+    public function getCurrentRecords()
+    {
+        $records = Mapper::findBy(
+            'Record',
+            [
+                'user' => $this->getCurrentUser(),
+                'length' => null,
+            ],
+            false,
+            ['start' => 'ASC']
+        );
+
+        return $records;
+    }
+    // }}}
+    // {{{ editRecord
+    public function editRecord(Record $newRecord)
+    {
+        $this->editEntry('Record', $newRecord);
+    }
+    // }}}
+
+    // {{{ getTodo
+    public function getTodo($id)
+    {
+        return $this->getPrivateEntity('Todo', $id);
+    }
+    // }}}
+    // {{{ getTodos
+    public function getTodos()
+    {
+        return $this->getPrivateEntities('Todo');
+    }
+    // }}}
+    // {{{ editTodo
+    public function editTodo(Todo $newTodo)
+    {
+        $this->editEntry('Todo', $newTodo);
+    }
+    // }}}
+
     // {{{ getAttribute
     protected function getAttribute($type, $name)
     {
@@ -107,19 +172,6 @@ class PRM extends Controller
         );
 
         return $attribute;
-    }
-    // }}}
-     // {{{ getAttributes
-    protected function getAttributes($type)
-    {
-        $attributes = Mapper::findBy(
-            $type,
-            [
-                'user' => $this->getCurrentUser(),
-            ]
-        );
-
-        return $attributes;
     }
     // }}}
     // {{{ getAttributesLengths
@@ -166,91 +218,27 @@ class PRM extends Controller
     }
     // }}}
 
-    // {{{ getRecord
-    public function getRecord($id)
+    // {{{ getPrivateEntity
+    protected function getPrivateEntity($class, $id)
     {
-        $record = Mapper::findOneBy(
-            'Record',
+        return Mapper::findOneBy(
+            $class,
             [
                 'id' => $id,
                 'user' => $this->getCurrentUser(),
             ]
         );
-
-        return $record;
     }
     // }}}
-    // {{{ getRecords
-    public function getRecords($start = null, $end = null)
+    // {{{ getPrivateEntities
+    protected function getPrivateEntities($class)
     {
-        $qb = Mapper::getEntityManager()->createQueryBuilder();
-
-        $qb->select('r')
-            ->from('Bh\Entity\Record', 'r')
-            ->where('r.user = :user')
-            ->andWhere('r.deleted = false')
-            ->orderBy('r.start', 'ASC')
-            ->setParameter('user', $this->getCurrentUser());
-
-        $this->qbDateClause($qb, $start, $end);
-
-        return $qb->getQuery()->getResult();
-    }
-    // }}}
-    // {{{ getCurrentRecords
-    public function getCurrentRecords()
-    {
-        $records = Mapper::findBy(
-            'Record',
-            [
-                'user' => $this->getCurrentUser(),
-                'length' => null,
-            ],
-            false,
-            ['start' => 'ASC']
-        );
-
-        return $records;
-    }
-    // }}}
-    // {{{ editRecord
-    public function editRecord(Record $newRecord)
-    {
-        $this->editEntry('Record', $newRecord);
-    }
-    // }}}
-
-    // {{{ getTodo
-    public function getTodo($id)
-    {
-        $record = Mapper::findOneBy(
-            'Todo',
-            [
-                'id' => $id,
-                'user' => $this->getCurrentUser(),
-            ]
-        );
-
-        return $record;
-    }
-    // }}}
-    // {{{ getTodos
-    public function getTodos()
-    {
-        $todos = Mapper::findBy(
-            'Todo',
+        return Mapper::findBy(
+            $class,
             [
                 'user' => $this->getCurrentUser(),
             ]
         );
-
-        return $todos;
-    }
-    // }}}
-    // {{{ editTodo
-    public function editTodo(Todo $newTodo)
-    {
-        $this->editEntry('Todo', $newTodo);
     }
     // }}}
 
