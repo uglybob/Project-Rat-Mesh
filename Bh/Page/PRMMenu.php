@@ -18,7 +18,7 @@ class PRMMenu
             ];
             $linksRight = [
                 'logout' => '/login',
-                $user->getEmail() => '/user',
+                $user->__toString() => '/user',
             ];
         } else {
             $linksLeft = [
