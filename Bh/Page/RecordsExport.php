@@ -30,15 +30,17 @@ class RecordsExport extends PRMBackend
                 }
             }
 
-            $totalLength += $totalDayLength;
+            if (!empty($filtered)) {
+                $totalLength += $totalDayLength;
 
-            $lengthString = round($totalDayLength / 3600, 2);
+                $lengthString = round($totalDayLength / 3600, 2);
 
-            $list .= HTML::div(['.title'],
-                HTML::div(['.date'], $day) .
-                HTML::div(['.length'], $lengthString)
-            );
-            $list .= new RecordList($filtered, 'record', false, false);
+                $list .= HTML::div(['.title'],
+                    HTML::div(['.date'], $day) .
+                    HTML::div(['.length'], $lengthString)
+                );
+                $list .= new RecordList($filtered, 'record', false, false);
+            }
         }
 
         $content .= HTML::div(['.title', '.total'],
