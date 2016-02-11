@@ -4,73 +4,81 @@ namespace Bh\Page;
 
 class TimespanSelector
 {
-    protected $start;
-    protected $end;
-
-    protected $uri;
-    protected $unit;
     protected $units = ['week', 'month', 'year', 'custom'];
-    protected $offset;
 
     // {{{ constructor
     public function __construct()
     {
-        $uriParts = explode('/', $_SERVER['REQUEST_URI']);
-        $this->uri = $uriParts[1];
+        $this->form = new \Depage\HtmlForm\HtmlForm('timespan', ['label' => 'select']);
 
-        $unitIndex = isset($uriParts[2]) ? (int) $uriParts[2] : 0;
-        $this->unit = $this->units[$unitIndex];
+        $unit = $this->form->addSingle(
+            'Unit',
+            [
+                'list' => $this->units,
+                'skin' => 'select',
+            ]
+        )->setValue(array_search($this->getUnit(), $this->units));
+        $this->form->addDate('Start')->setValue($this->getStart()->format('Y-m-d'));
+        $this->form->addDate('End')->setValue($this->getEnd()->format('Y-m-d'));
 
-        $this->offset = isset($uriParts[3]) ? (int) $uriParts[3] : 0;
-        $offsetString = ($this->offset >= 0) ? '+' . $this->offset : $this->offset;
-
-        if ($this->unit == 'week') {
-            $this->start = new \Datetime('this week');
-            $this->start->setTime(0,0);
-        } else if ($this->unit == 'month') {
-            $this->start = new \Datetime(date('Y') . '-' . date('m') . '-01 00:00:00');
-        } else if ($this->unit == 'year') {
-            $this->start = new \Datetime(date('Y') . '-01-01 00:00:00');
-        }
-
-        $this->start->modify($offsetString . ' ' . $this->unit);
+        $this->form->process();
     }
     // }}}
 
+    // {{{ getUnit
+    public function getUnit()
+    {
+        $values = $this->form->getValues();
+        $unitInt = isset($values['Unit']) ? $values['Unit'] : 0;
+        $unit = $this->units[$unitInt];
+
+        return $unit;
+    }
+    // }}}
     // {{{ getStart
     public function getStart()
     {
-        return $this->start;
+        $values = $this->form->getValues();
+
+        if (isset($values['Start'])) {
+            $start = new \Datetime($values['Start']);
+        } else {
+            if ($this->getUnit() == 'week') {
+                $start = new \Datetime('this week');
+                $start->setTime(0,0);
+            } else if ($this->getUnit() == 'month') {
+                $start = new \Datetime(date('Y') . '-' . date('m') . '-01 00:00:00');
+            } else if ($this->getUnit() == 'year') {
+                $start = new \Datetime(date('Y') . '-01-01 00:00:00');
+            }
+        }
+
+        return $start;
     }
     // }}}
     // {{{ getEnd
     public function getEnd()
     {
-        $end = clone $this->start;
-        $end->modify('+1 ' . $this->unit);
+        $values = $this->form->getValues();
+
+        if (
+            ($this->getUnit() == 'custom')
+            && (isset($values['End']))
+        ) {
+            $end = new \Datetime($values['End']);
+        } else {
+            $end = clone $this->getStart();
+            $end->modify('+1 ' . $this->getUnit());
+        }
 
         return $end;
     }
     // }}}
+
     // {{{ toString
     public function __toString()
     {
-        $uri = $this->uri;
-        $unit = array_search($this->unit, $this->units);
-        $offset = $this->offset;
-
-        $list = [
-            '<<' => "/$uri/$unit/" . ($offset - 1),
-            'week' => "/$uri/0/0",
-            'month' => "/$uri/1/0",
-            'year' => "/$uri/2/0",
-            '>>' => "/$uri/$unit/" . ($offset + 1),
-        ];
-
-        return HTML::div(['.row', '.timespan'],
-            HTML::menu($list) .
-            HTML::div(['.length'], $this->getStart()->format('Y-m-d') . ' - ' . $this->getEnd()->format('Y-m-d'))
-        );
+        return $this->form->__toString();
     }
     // }}}
 }
