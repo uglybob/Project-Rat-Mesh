@@ -35,9 +35,9 @@ class Todos extends PRMBackend
                 }
             }
             if (
-                (in_array($todo->getCategory(), $filter->getElements('Category')) || empty($filter->getElements('Category')))
-                && (in_array($todo->getActivity(), $filter->getElements('Activity')) || empty($filter->getElements('Activity')))
-                && ($inTags || empty($filter->getElements('Tag')))
+                (in_array($todo->getCategory(), $filter->getElements('Category')) || !$filter->getElements('Category'))
+                && (in_array($todo->getActivity(), $filter->getElements('Activity')) || !$filter->getElements('Activity'))
+                && ($inTags || !$filter->getElements('Tag'))
             ) {
                 $filtered[] = $todo;
             }
