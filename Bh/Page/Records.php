@@ -4,6 +4,14 @@ namespace Bh\Page;
 
 class Records extends PRMBackend
 {
+    // {{{ hookConstructor
+    protected function hookConstructor()
+    {
+        $this->stylesheets[] = '/vendor/depage/htmlform/lib/css/depage-forms.css';
+        $this->title = 'Records';
+    }
+    // }}}
+
     // {{{ renderContent
     public function renderContent()
     {
@@ -45,12 +53,6 @@ class Records extends PRMBackend
         $content .= $list;
 
         return HTML::div($content);
-    }
-    // }}}
-    // {{{ hookTitle
-    public function hookTitle()
-    {
-        return 'Records';
     }
     // }}}
     // {{{ splitRecords

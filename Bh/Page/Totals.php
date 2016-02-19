@@ -4,6 +4,13 @@ namespace Bh\Page;
 
 class Totals extends PRMBackend
 {
+    // {{{ hookConstructor
+    protected function hookConstructor()
+    {
+        $this->stylesheets[] = '/vendor/depage/htmlform/lib/css/depage-forms.css';
+        $this->title = 'Totals';
+    }
+    // }}}
     // {{{ renderContent
     public function renderContent()
     {
@@ -20,12 +27,6 @@ class Totals extends PRMBackend
         }
 
         return $content;
-    }
-    // }}}
-    // {{{ hookTitle
-    public function hookTitle()
-    {
-        return 'Totals';
     }
     // }}}
 
