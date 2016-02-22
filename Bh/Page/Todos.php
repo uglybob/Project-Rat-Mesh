@@ -2,6 +2,10 @@
 
 namespace Bh\Page;
 
+use Bh\Page\Module\HTML;
+use Bh\Page\Module\Filter;
+use Bh\Page\Module\TodoList;
+
 class Todos extends PRMBackend
 {
     // {{{ hookConstructor

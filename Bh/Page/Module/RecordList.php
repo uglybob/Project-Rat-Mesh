@@ -1,6 +1,8 @@
 <?php
 
-namespace Bh\Page;
+namespace Bh\Page\Module;
+
+use Bh\Page\Module\ObjectList;
 
 class RecordList extends ObjectList
 {

@@ -2,6 +2,8 @@
 
 namespace Bh\Page;
 
+use Bh\Page\Module\RecordList;
+
 class Home extends PRMPage
 {
     // {{{ renderContent

@@ -2,6 +2,10 @@
 
 namespace Bh\Page;
 
+use Bh\Page\Module\HTML;
+use Bh\Page\Module\TimespanSelector;
+use Bh\Page\Module\RecordList;
+
 class Records extends PRMBackend
 {
     // {{{ hookConstructor

@@ -2,6 +2,9 @@
 
 namespace Bh\Page;
 
+use Bh\Page\Module\HTML;
+use Bh\Page\Module\TimespanSelector;
+
 class Totals extends PRMBackend
 {
     // {{{ hookConstructor

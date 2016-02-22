@@ -2,6 +2,8 @@
 
 namespace Bh\Page;
 
+use Bh\Page\Module\PRMMenu;
+
 class PRMTemplate extends Template
 {
     // {{{ constructor

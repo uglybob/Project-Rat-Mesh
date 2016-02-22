@@ -1,6 +1,6 @@
 <?php
 
-namespace Bh\Page;
+namespace Bh\Page\Module;
 
 class TimespanSelector
 {
