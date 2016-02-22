@@ -2,6 +2,8 @@
 
 namespace Bh\Page\Module;
 
+use Bh\Page\Page;
+
 class EditRecord extends EditEntry
 {
     // {{{ create
