@@ -36,6 +36,12 @@ class Entry extends PrivateEntity
         }
     }
     // }}}
+    // {{{ setText
+    public function setText($newText)
+    {
+        $this->text = ($newText) ? $newText : '';
+    }
+    // }}}
     // {{{ addTag
     public function addTag($tag)
     {
