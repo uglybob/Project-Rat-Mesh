@@ -5,16 +5,21 @@ namespace Bh\Lib;
 use Bh\Entity\Record;
 
 class API {
+    // {{{ constructor
     public function __construct()
     {
         $this->prm = new \Bh\Lib\PRM();
     }
+    // }}}
 
+    // {{{ login
     public function login($name, $pass)
     {
         return $this->prm->login($name, $pass);
     }
+    // }}}
 
+    // {{{ getEntities
     protected function getEntities($class)
     {
         $getter = "get$class";
@@ -26,22 +31,35 @@ class API {
 
         return $entities;
     }
+    // }}}
 
+    // {{{ getCategories
     public function getCategories()
     {
         return $this->getEntities('Categories');
     }
-
+    // }}}
+    // {{{ getTags
     public function getTags()
     {
         return $this->getEntities('Tags');
     }
-
+    // }}}
+    // {{{ getActivities
     public function getActivities()
     {
         return $this->getEntities('Activities');
     }
+    // }}}
 
+    // {{{ getRecords
+    public function getRecords($start = null, $end = null)
+    {
+        return $this->getRecords($start, $end);
+    }
+    // }}}
+
+    // {{{ editRecord
     public function editRecord($id, $start, $end, $activity, $category, $tags, $text)
     {
         if ($id) {
@@ -62,4 +80,5 @@ class API {
 
         $this->prm->editRecord($record);
     }
+    // }}}
 }
