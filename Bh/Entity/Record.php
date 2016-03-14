@@ -25,6 +25,13 @@ class Record extends Entry
         return is_null($this->length);
     }
     // }}}
+    // {{{ stop
+    public function stop()
+    {
+        $now = new \Datetime('now');
+        $this->setEnd($now);
+    }
+    // }}}
     // {{{ setStart
     public function setStart($start)
     {

@@ -135,7 +135,17 @@ class PRM extends Controller
     // {{{ editRecord
     public function editRecord(Record $newRecord)
     {
-        $this->editEntry('Record', $newRecord);
+        $record = $this->editEntry('Record', $newRecord);
+
+        if (!is_null($record) && $record->isRunning()) {
+            foreach ($this->getCurrentRecords as $running) {
+                $running->stop();
+            }
+
+            Mapper::commit();
+        }
+
+        return $record;
     }
     // }}}
 
@@ -245,6 +255,8 @@ class PRM extends Controller
     // {{{ editEntry
     protected function editEntry($class, $newEntry)
     {
+        $result = null;
+
         if (
             $newEntry->getUser() === $this->getCurrentUser()
             && (
@@ -261,7 +273,11 @@ class PRM extends Controller
             }
 
             Mapper::commit();
+
+            $result = $newEntry;
         }
+
+        return $result;
     }
     // }}}
 
