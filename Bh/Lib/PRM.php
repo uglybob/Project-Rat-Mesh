@@ -135,13 +135,15 @@ class PRM extends Controller
     // {{{ editRecord
     public function editRecord(Record $newRecord)
     {
-        $record = $this->editEntry('Record', $newRecord);
-
-        if (!is_null($record) && $record->isRunning()) {
-            foreach ($this->getCurrentRecords as $running) {
+        if ($newRecord->isRunning()) {
+            foreach ($this->getCurrentRecords() as $running) {
                 $running->stop();
             }
+        }
 
+        $record = $this->editEntry('Record', $newRecord);
+
+        if ($record) {
             Mapper::commit();
         }
 

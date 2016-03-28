@@ -78,7 +78,7 @@ class API {
         $record->setTags($tags);
         $record->setText($text);
 
-        $this->prm->editRecord($record);
+        return (bool) $this->prm->editRecord($record);
     }
     // }}}
 }
