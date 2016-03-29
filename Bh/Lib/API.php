@@ -85,6 +85,14 @@ class API {
         return $this->convertRecord($record);
   }
     // }}}
+    // {{{ getLastRecord
+    public function getLastRecord()
+    {
+        $record = $this->prm->getLastRecord();
+
+        return $this->convertRecord($record);
+  }
+    // }}}
 
     // {{{ stopRecord
     public function stopRecord($id)

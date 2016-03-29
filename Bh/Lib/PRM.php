@@ -99,6 +99,28 @@ class PRM extends Controller
         return $this->getPrivateEntity('Record', $id);
     }
     // }}}
+    // {{{ getLastRecord
+    public function getLastRecord()
+    {
+        $result = null;
+
+        if (
+            ($user = $this->getCurrentUser())
+            && ($userId = $user->getId())
+        ) {
+            $sql = 'SELECT r.id FROM records r WHERE r.user_id = :user AND r.deleted = false ORDER BY ADDDATE(r.start, INTERVAL r.length SECOND) DESC limit 1';
+            $stmt = Mapper::getEntityManager()->getConnection()->prepare($sql);
+            $stmt->execute([':user' => $userId]);
+            $idList = $stmt->fetchAll();
+            if (isset($idList[0])) {
+                $id = $idList[0];
+                $result = $this->getRecord($id);
+            }
+        }
+
+        return $result;
+    }
+    // }}}
     // {{{ getRecords
     public function getRecords($start = null, $end = null)
     {
