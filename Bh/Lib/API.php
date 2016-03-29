@@ -32,6 +32,30 @@ class API {
         return $entities;
     }
     // }}}
+    // {{{ convertRecord
+    protected function convertRecord($record)
+    {
+        $obj = null;
+
+        if ($record) {
+            $obj = new \stdClass();
+
+            $obj->id = $record->getId();
+            $obj->start = $record->getStart()->getTimestamp();
+            $obj->end = $record->isRunning() ? null : $record->getEnd()->getTimestamp();
+            $obj->activity = $record->getActivity()->__toString();
+            $obj->category = $record->getCategory()->__toString();
+
+            foreach ($record->getTags() as $tag) {
+                $obj->tags[] = $tag->__toString();
+            }
+
+            $obj->text = $record->getText();
+        }
+
+        return $obj;
+    }
+    // }}}
 
     // {{{ getCategories
     public function getCategories()
@@ -52,11 +76,14 @@ class API {
     }
     // }}}
 
-    // {{{ getRecords
-    public function getRecords($start = null, $end = null)
+    // {{{ getCurrentRecord
+    public function getCurrentRecord()
     {
-        return $this->getRecords($start, $end);
-    }
+        $records = $this->prm->getCurrentRecords();
+        $record = isset($records[0]) ? $records[0] : null;
+
+        return $this->convertRecord($record);
+  }
     // }}}
 
     // {{{ editRecord
@@ -78,7 +105,7 @@ class API {
         $record->setTags($tags);
         $record->setText($text);
 
-        return (bool) $this->prm->editRecord($record);
+        return $this->convertRecord($this->prm->editRecord($record));
     }
     // }}}
 }
