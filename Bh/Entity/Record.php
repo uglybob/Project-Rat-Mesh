@@ -28,8 +28,15 @@ class Record extends Entry
     // {{{ stop
     public function stop()
     {
-        $now = new \Datetime('now');
-        $this->setEnd($now);
+        $result = false;
+
+        if ($this->isRunning()) {
+            $now = new \Datetime('now');
+            $this->setEnd($now);
+            $result = true;
+        }
+
+        return $result;
     }
     // }}}
     // {{{ setStart

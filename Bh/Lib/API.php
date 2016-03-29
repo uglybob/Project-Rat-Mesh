@@ -86,6 +86,18 @@ class API {
   }
     // }}}
 
+    // {{{ stopRecord
+    public function stopRecord($id)
+    {
+        $result = null;
+
+        if ($id) {
+            $result = $this->prm->stopRecord($id);
+        }
+
+        return $this->convertRecord($result);
+    }
+    // }}}
     // {{{ editRecord
     public function editRecord($id, $start, $end, $activity, $category, $tags, $text)
     {

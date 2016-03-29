@@ -150,6 +150,23 @@ class PRM extends Controller
         return $record;
     }
     // }}}
+    // {{{ stopRecord
+    public function stopRecord($id)
+    {
+        $result = null;
+
+        if (
+            $id
+            && ($record = $this->getRecord($id))
+            && $record->stop()
+        ) {
+            Mapper::commit();
+            $result = $record;
+        }
+
+        return $result;
+    }
+    // }}}
 
     // {{{ getTodo
     public function getTodo($id)
