@@ -173,17 +173,19 @@ class PRM extends Controller
     }
     // }}}
     // {{{ stopRecord
-    public function stopRecord($id)
+    public function stopRecord()
     {
         $result = null;
+        $stopped = true;
 
-        if (
-            $id
-            && ($record = $this->getRecord($id))
-            && $record->stop()
-        ) {
+        foreach ($this->getCurrentRecords() as $record) {
+            if ($stopped = $record->stop() && $stopped) {
+                $result = $record;
+            }
+        }
+
+        if ($stopped) {
             Mapper::commit();
-            $result = $record;
         }
 
         return $result;

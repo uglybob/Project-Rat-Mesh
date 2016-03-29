@@ -95,13 +95,9 @@ class API {
     // }}}
 
     // {{{ stopRecord
-    public function stopRecord($id)
+    public function stopRecord()
     {
-        $result = null;
-
-        if ($id) {
-            $result = $this->prm->stopRecord($id);
-        }
+        $result = $this->prm->stopRecord();
 
         return $this->convertRecord($result);
     }
