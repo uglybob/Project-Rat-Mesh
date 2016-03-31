@@ -60,6 +60,12 @@ class PRM extends Controller
     }
     // }}}
 
+     // {{{ getTag
+    public function getTag($name)
+    {
+        return $this->getAttribute('Tag', $name);
+    }
+    // }}}
      // {{{ getTags
     public function getTags()
     {
@@ -199,9 +205,30 @@ class PRM extends Controller
     }
     // }}}
     // {{{ getTodos
-    public function getTodos()
+    public function getTodos($activity = null, $category = null, $tags = [])
     {
-        return $this->getPrivateEntities('Todo');
+        $qb = Mapper::getEntityManager()->createQueryBuilder();
+
+        $qb->select('t')
+            ->from('Bh\Entity\Todo', 't')
+            ->where('t.user = :user')
+            ->setParameter('user', $this->getCurrentUser());
+
+        if (!is_null($activity)) {
+            $qb->andWhere('t.activity = :activity')
+                ->setParameter('activity', $this->getActivity($activity));
+        }
+        if (!is_null($category)) {
+            $qb->andWhere('t.category = :category')
+                ->setParameter('category', $this->getCategory($category));
+        }
+
+        foreach($tags as $tag) {
+            $qb->andWhere(':tag MEMBER OF t.tags')
+                ->setParameter('tag', $this->getTag($tag));
+        }
+
+        return $qb->getQuery()->execute();
     }
     // }}}
     // {{{ editTodo

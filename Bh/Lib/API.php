@@ -56,6 +56,40 @@ class API {
         return $obj;
     }
     // }}}
+    // {{{ convertTodo
+    protected function convertTodo($todo)
+    {
+        $obj = null;
+
+        if ($todo) {
+            $obj = new \stdClass();
+
+            $obj->id = $todo->getId();
+            $obj->activity = $todo->getActivity()->__toString();
+            $obj->category = $todo->getCategory()->__toString();
+
+            foreach ($todo->getTags() as $tag) {
+                $obj->tags[] = $tag->__toString();
+            }
+
+            $obj->text = $todo->getText();
+        }
+
+        return $obj;
+    }
+    // }}}
+    // {{{ convertTodos
+    protected function convertTodos($todos = [])
+    {
+        $converted = [];
+
+        foreach($todos as $todo) {
+            $converted[] = $this->convertTodo($todo);
+        }
+
+        return $converted;
+    }
+    // }}}
 
     // {{{ getCategories
     public function getCategories()
@@ -123,5 +157,14 @@ class API {
 
         return $this->convertRecord($this->prm->editRecord($record));
     }
+    // }}}
+
+    // {{{ getTodos
+    public function getTodos($activity = null, $category = null, $tags = [])
+    {
+        $todos = $this->prm->getTodos($activity, $category, $tags);
+
+        return $this->convertTodos($todos);
+  }
     // }}}
 }
