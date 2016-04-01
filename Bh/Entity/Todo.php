@@ -5,7 +5,7 @@ namespace Bh\Entity;
 class Todo extends Entry
 {
     // {{{ variables
-    protected $done = false;
+    protected $done = null;
     protected $children;
     protected $parent;
     // }}}
@@ -28,6 +28,20 @@ class Todo extends Entry
     public function __toString()
     {
         return $this->getText();
+    }
+    // }}}
+    // {{{ done
+    public function done($done = true)
+    {
+        if ($done) {
+            $this->done = new \Datetime('now');
+        }
+    }
+    // }}}
+    // {{{ isDone
+    public function isDone()
+    {
+        return (bool) $this->done;
     }
     // }}}
 }

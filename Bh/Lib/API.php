@@ -68,6 +68,7 @@ class API {
             $obj->activity = $todo->getActivity()->__toString();
             $obj->category = $todo->getCategory()->__toString();
 
+            $obj->tags = [];
             foreach ($todo->getTags() as $tag) {
                 $obj->tags[] = $tag->__toString();
             }
