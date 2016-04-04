@@ -234,7 +234,7 @@ class PRM extends Controller
     // {{{ editTodo
     public function editTodo(Todo $newTodo)
     {
-        $this->editEntry('Todo', $newTodo);
+        return $this->editEntry('Todo', $newTodo);
     }
     // }}}
 

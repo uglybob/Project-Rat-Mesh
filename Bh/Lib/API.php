@@ -3,6 +3,7 @@
 namespace Bh\Lib;
 
 use Bh\Entity\Record;
+use Bh\Entity\Todo;
 
 class API {
     // {{{ constructor
@@ -159,6 +160,25 @@ class API {
         $record->setText($text);
 
         return $this->convertRecord($this->prm->editRecord($record));
+    }
+    // }}}
+
+    // {{{ editTodo
+    public function editTodo($id, $activity, $category, $tags, $text, $parent)
+    {
+        if ($id) {
+            $todo = $this->prm->getTodo($id);
+        } else {
+            $todo = new Todo($this->prm->getCurrentUser());
+        }
+
+        $todo->setActivity($activity);
+        $todo->setCategory($category);
+        $todo->setTags($tags);
+        $todo->setText($text);
+        if ($parent) $todo->setParent($this->prm->getTodo($parent));
+
+        return $this->convertTodo($this->prm->editTodo($todo));
     }
     // }}}
 
