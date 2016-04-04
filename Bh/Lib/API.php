@@ -181,6 +181,14 @@ class API {
         return $this->convertTodo($this->prm->editTodo($todo));
     }
     // }}}
+    // {{{ deleteTodo
+    public function deleteTodo($id)
+    {
+        $todo = $this->prm->getTodo($id);
+
+        return $this->prm->deleteTodo($todo);
+    }
+    // }}}
 
     // {{{ getTodos
     public function getTodos($activity = null, $category = null, $tags = [])

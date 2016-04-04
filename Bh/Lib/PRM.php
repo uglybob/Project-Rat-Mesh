@@ -212,6 +212,7 @@ class PRM extends Controller
         $qb->select('t')
             ->from('Bh\Entity\Todo', 't')
             ->where('t.user = :user')
+            ->andWhere('t.deleted = false')
             ->setParameter('user', $this->getCurrentUser());
 
         if (!is_null($activity)) {
@@ -235,6 +236,17 @@ class PRM extends Controller
     public function editTodo(Todo $newTodo)
     {
         return $this->editEntry('Todo', $newTodo);
+    }
+    // }}}
+    // {{{ deleteTodo
+    public function deleteTodo(Todo $todo)
+    {
+        $todo = $this->getTodo($todo->getId());
+        $todo->delete();
+
+        Mapper::commit();
+
+        return true;
     }
     // }}}
 
