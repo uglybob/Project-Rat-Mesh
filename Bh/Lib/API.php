@@ -69,7 +69,7 @@ class API {
             $obj->activity = $todo->getActivity()->__toString();
             $obj->category = $todo->getCategory()->__toString();
 
-            $obj->parent = ($todo->getParent()) ? $todo->getParent()->getId() : null;
+            $obj->parentId = ($todo->getParent()) ? $todo->getParent()->getId() : null;
 
             $obj->tags = [];
             foreach ($todo->getTags() as $tag) {
