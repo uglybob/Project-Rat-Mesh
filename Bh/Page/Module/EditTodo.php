@@ -29,6 +29,8 @@ class EditTodo extends EditEntry
                 'autocomplete' => false,
             ]
         );
+
+        $this->form->addBoolean('Done');
     }
     // }}}
     // {{{ populate
@@ -37,14 +39,16 @@ class EditTodo extends EditEntry
         parent::populate();
 
         $parent = $this->object->getParent();
-
         if (!is_null($parent)) {
             $values = [
                 'Parent' => $parent->getId(),
             ];
 
-            $this->form->populate($values);
         }
+
+        $values['Done'] = $this->object->isDone();
+
+        $this->form->populate($values);
     }
     // }}}
     // {{{ save
@@ -56,6 +60,12 @@ class EditTodo extends EditEntry
 
         $parent = $this->controller->getTodo($values['Parent']);
         $this->object->setParent($parent);
+
+        if ($values['Done']) {
+            $this->object->check();
+        } else {
+            $this->object->uncheck();
+        }
 
         $this->controller->editTodo($this->object);
     }

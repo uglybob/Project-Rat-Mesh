@@ -47,6 +47,7 @@ class API {
             $obj->activity = $record->getActivity()->__toString();
             $obj->category = $record->getCategory()->__toString();
 
+            $obj->tags = [];
             foreach ($record->getTags() as $tag) {
                 $obj->tags[] = $tag->__toString();
             }
@@ -68,6 +69,7 @@ class API {
             $obj->id = $todo->getId();
             $obj->activity = $todo->getActivity()->__toString();
             $obj->category = $todo->getCategory()->__toString();
+            $obj->done = ($todo->isDone()) ? $todo->getDone()->getTimestamp() : null;
 
             $obj->parentId = ($todo->getParent()) ? $todo->getParent()->getId() : null;
 

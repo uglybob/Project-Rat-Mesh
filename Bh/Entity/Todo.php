@@ -44,4 +44,27 @@ class Todo extends Entry
         return (bool) $this->done;
     }
     // }}}
+
+    // {{{ check
+    public function check()
+    {
+        if (!$this->isDone()) {
+            $this->done = new \DateTime('now');
+
+            foreach ($this->getChildren() as $child) {
+                $child->check();
+            }
+        }
+    }
+    // }}}
+    // {{{ uncheck
+    public function uncheck()
+    {
+        $this->done = null;
+
+        foreach ($this->getChildren() as $child) {
+            $child->uncheck();
+        }
+    }
+    // }}}
 }
