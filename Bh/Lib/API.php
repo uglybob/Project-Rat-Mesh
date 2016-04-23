@@ -166,7 +166,7 @@ class API {
     // }}}
 
     // {{{ editTodo
-    public function editTodo($id, $activity, $category, $tags, $text, $parent)
+    public function editTodo($id, $activity, $category, $tags, $text, $parent, $done)
     {
         if ($id) {
             $todo = $this->prm->getTodo($id);
@@ -179,6 +179,11 @@ class API {
         $todo->setTags($tags);
         $todo->setText($text);
         if ($parent) $todo->setParent($this->prm->getTodo($parent));
+        if ($done) {
+            $todo->check();
+        } else {
+            $todo->uncheck();
+        }
 
         return $this->convertTodo($this->prm->editTodo($todo));
     }
@@ -198,6 +203,14 @@ class API {
         $todos = $this->prm->getTodos($activity, $category, $tags);
 
         return $this->convertTodos($todos);
+  }
+    // }}}
+    // {{{ getTodo
+    public function getTodo($id)
+    {
+        $todo = $this->prm->getTodo($id);
+
+        return $this->convertTodo($todo);
   }
     // }}}
 }
