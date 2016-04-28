@@ -90,7 +90,7 @@ class API {
         $converted = [];
 
         foreach($todos as $todo) {
-            $converted[] = $this->convertTodo($todo);
+            $converted[$todo->getId()] = $this->convertTodo($todo);
         }
 
         return $converted;
@@ -143,7 +143,7 @@ class API {
     }
     // }}}
     // {{{ editRecord
-    public function editRecord($id, $start, $end, $activity, $category, $tags, $text)
+    public function editRecord($id, $activity, $category, $tags, $text, $start, $end)
     {
         if ($id) {
             $record = $this->prm->getRecord($id);
