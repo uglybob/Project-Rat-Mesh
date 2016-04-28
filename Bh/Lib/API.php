@@ -166,7 +166,7 @@ class API {
     // }}}
 
     // {{{ editTodo
-    public function editTodo($id, $activity, $category, $tags, $text, $parent, $done)
+    public function editTodo($id, $activity, $category, $tags, $text, $parentId, $done)
     {
         if ($id) {
             $todo = $this->prm->getTodo($id);
@@ -178,7 +178,8 @@ class API {
         $todo->setCategory($category);
         $todo->setTags($tags);
         $todo->setText($text);
-        if ($parent) $todo->setParent($this->prm->getTodo($parent));
+        $todo->setParent($this->prm->getTodo($parentId));
+
         if ($done) {
             $todo->check();
         } else {
