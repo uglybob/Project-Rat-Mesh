@@ -5,6 +5,7 @@
 
     <entity name="Bh\Entity\Todo" table="todos">
         <field name="done" type="datetime" nullable="true" />
+        <field name="position" type="integer" nullable="true" />
         <one-to-many field="children" target-entity="Todo" mapped-by="parent" />
         <many-to-one field="parent" target-entity="Todo" inversed-by="children" />
         <many-to-many target-entity="Tag" field="tags" />

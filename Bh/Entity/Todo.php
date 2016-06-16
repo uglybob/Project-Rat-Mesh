@@ -8,6 +8,7 @@ class Todo extends Entry
     protected $done = null;
     protected $children;
     protected $parent;
+    protected $position;
     // }}}
     // {{{ constructor
     public function __construct($user) {

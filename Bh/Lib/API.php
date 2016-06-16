@@ -72,6 +72,7 @@ class API {
             $obj->done = ($todo->isDone()) ? $todo->getDone()->getTimestamp() : null;
 
             $obj->parentId = ($todo->getParent()) ? $todo->getParent()->getId() : null;
+            $obj->position = $todo->getPosition();
 
             $obj->tags = [];
             foreach ($todo->getTags() as $tag) {
@@ -166,7 +167,7 @@ class API {
     // }}}
 
     // {{{ editTodo
-    public function editTodo($id, $activity, $category, $tags, $text, $parentId, $done)
+    public function editTodo($id, $activity, $category, $tags, $text, $parentId, $position, $done)
     {
         if ($id) {
             $todo = $this->prm->getTodo($id);
@@ -179,6 +180,7 @@ class API {
         $todo->setTags($tags);
         $todo->setText($text);
         $todo->setParent($this->prm->getTodo($parentId));
+        $todo->setPosition($position);
 
         if ($done) {
             $todo->check();
