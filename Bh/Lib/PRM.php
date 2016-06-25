@@ -205,7 +205,7 @@ class PRM extends Controller
     }
     // }}}
     // {{{ getTodos
-    public function getTodos($activity = null, $category = null, $tags = [])
+    public function getTodos($activity = null, $category = null, $tags = [], $includeDone = true)
     {
         $qb = Mapper::getEntityManager()->createQueryBuilder();
 
@@ -222,6 +222,9 @@ class PRM extends Controller
         if (!is_null($category)) {
             $qb->andWhere('t.category = :category')
                 ->setParameter('category', $this->getCategory($category));
+        }
+        if (!$includeDone) {
+            $qb->andWhere($qb->expr()->isNull('t.done'));
         }
 
         foreach($tags as $tag) {

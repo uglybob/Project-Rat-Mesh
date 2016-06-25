@@ -201,9 +201,9 @@ class API {
     // }}}
 
     // {{{ getTodos
-    public function getTodos($activity = null, $category = null, $tags = [])
+    public function getTodos($activity = null, $category = null, $tags = [], $includeDone = true)
     {
-        $todos = $this->prm->getTodos($activity, $category, $tags);
+        $todos = $this->prm->getTodos($activity, $category, $tags, $includeDone);
 
         return $this->convertTodos($todos);
   }
